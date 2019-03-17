@@ -1,6 +1,6 @@
 #pragma once
-#include "object.h"
+#include "mesh.h"
 
 class Schema {
-	virtual Object apply(Object object);
+	virtual Mesh apply(Mesh mesh);
 };
