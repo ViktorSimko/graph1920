@@ -5,9 +5,9 @@
 
 int main() {
 	try {
-		std::tuple<std::vector<Point3D>, std::vector<Point2D>, std::vector<Point3D>> result = readMesh("test.obj", MeshType::OBJ);
+		std::tuple<std::vector<MeshVertex>, std::vector<Point2D>, std::vector<Point3D>> result = readMesh("test.obj", MeshType::OBJ);
 
-		std::vector<Point3D> vertices = std::get<0>(result);
+		std::vector<MeshVertex> vertices = std::get<0>(result);
 		std::vector<Point2D> uvs = std::get<1>(result);
 		std::vector<Point3D> normals = std::get<2>(result);
 

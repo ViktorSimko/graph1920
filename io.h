@@ -191,7 +191,7 @@ Mesh readMeshObj(std::string path) {
 	return mesh;
 }
 
-std::tuple<std::vector<MeshVertex>, std::vector<Point2D>, std::vector<Point3D>> read(std::string path, MeshType type) {
+std::tuple<std::vector<MeshVertex>, std::vector<Point2D>, std::vector<Point3D>> readMesh(std::string path, MeshType type) {
 	switch (type)
 	{
 	case OBJ:
