@@ -13,6 +13,10 @@ enum MeshType {
 	OBJ
 };
 
+/*
+	http://www.opengl-tutorial.org/hu/beginners-tutorials/tutorial-7-model-loading/
+*/
+
 Mesh readMeshObj(std::string path) {
 	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 	std::vector<MeshVertex> temp_vertices;
