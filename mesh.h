@@ -119,6 +119,8 @@ public:
 	vector<MeshHalfEdge> HalfEdgeArray; // HA
 
 	vector<Triangle> Triangles;
+	vector<Point2D> UVArray;
+	vector<Point3D> NormalsArray;
 
 	// ei : The old half-edge index
 	// type : 0=A or 1=B, denoting which part of the new half-edge is being matched

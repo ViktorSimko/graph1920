@@ -13,15 +13,24 @@ enum MeshType {
 	OBJ
 };
 
+int getHalfEdgeIndex(int vertex0, int vertex1, std::vector<std::pair<int, int>> indices) {
+
+	for (int i = 0; i < indices.size(); ++i) {
+		if (indices[i].first == vertex0 && indices[i].second == vertex1) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 /*
 	http://www.opengl-tutorial.org/hu/beginners-tutorials/tutorial-7-model-loading/
 */
 
 Mesh readMeshObj(std::string path) {
 	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
-	std::vector<MeshVertex> temp_vertices;
-	std::vector<Point2D> temp_uvs;
-	std::vector<Point3D> temp_normals;
+	
+	std::vector<std::pair<int, int>> heIndices;
 
 	Mesh mesh = Mesh();
 
@@ -40,16 +49,15 @@ Mesh readMeshObj(std::string path) {
 
 		if (line[0] == 'v' && line[1] == ' ') {
 			MeshVertex vertex = MeshVertex(std::stod(content[1]), std::stod(content[2]), std::stod(content[3]));
-			temp_vertices.push_back(vertex);
 			mesh.VerticesArray.push_back(vertex);
 		}
 		else if (line[0] == 'v' && line[1] == 't') {
 			Point2D uv = Point2D(std::stod(content[1]), std::stod(content[2]));
-			temp_uvs.push_back(uv);
+			mesh.UVArray.push_back(uv);
 		}
 		else if (line[0] == 'v' && line[1] == 'n') {
 			Point3D normal = Point3D(std::stod(content[1]), std::stod(content[2]), std::stod(content[3]));
-			temp_normals.push_back(normal);
+			mesh.NormalsArray.push_back(normal);
 		}
 		else if (line[0] == 'f') {
 			std::string vertex1, vertex2, vertex3;
@@ -67,19 +75,32 @@ Mesh readMeshObj(std::string path) {
 			std::vector<std::string> secondPartNumbers = wordsInLine(secondPart, '/');
 			std::vector<std::string> thirdPartNumbers = wordsInLine(thirdPart, '/');
 
-			vertexIndex[0] = std::stoi(firstPartNumbers[0]);
-			uvIndex[0] = std::stoi(firstPartNumbers[1]);
-			normalIndex[0] = std::stoi(firstPartNumbers[2]);
+			vertexIndex[0] = std::stoi(firstPartNumbers[0]) - 1;
+			if (firstPartNumbers.size() > 1)
+				uvIndex[0] = std::stoi(firstPartNumbers[1]) - 1;
+			if (firstPartNumbers.size() > 2)
+				normalIndex[0] = std::stoi(firstPartNumbers[2]) - 1;
 
-			vertexIndex[1] = std::stoi(secondPartNumbers[0]);
-			uvIndex[1] = std::stoi(secondPartNumbers[1]);
-			normalIndex[1] = std::stoi(secondPartNumbers[2]);
+			vertexIndex[1] = std::stoi(secondPartNumbers[0]) - 1;
+			if (secondPartNumbers.size() > 1)
+				uvIndex[1] = std::stoi(secondPartNumbers[1]) - 1;
+			if (secondPartNumbers.size() > 2)
+				normalIndex[1] = std::stoi(secondPartNumbers[2]) - 1;
 
-			vertexIndex[2] = std::stoi(thirdPartNumbers[0]);
-			uvIndex[2] = std::stoi(thirdPartNumbers[1]);
-			normalIndex[2] = std::stoi(thirdPartNumbers[2]);
+			vertexIndex[2] = std::stoi(thirdPartNumbers[0]) - 1;
+			if (thirdPartNumbers.size() > 1)
+				uvIndex[2] = std::stoi(thirdPartNumbers[1]) - 1;
+			if (thirdPartNumbers.size() > 2)
+				normalIndex[2] = std::stoi(thirdPartNumbers[2]) - 1;
+
+			heIndices.push_back(std::make_pair(vertexIndex[0], vertexIndex[1]));
+			heIndices.push_back(std::make_pair(vertexIndex[1], vertexIndex[2]));
+			heIndices.push_back(std::make_pair(vertexIndex[2], vertexIndex[0]));
 
 			mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
+			mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[2], vertexIndex[0], heIndices);
+			mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[0], vertexIndex[1], heIndices);
+			mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[1], vertexIndex[2], heIndices);
 
 			vertexIndices.push_back(vertexIndex[0]);
 			vertexIndices.push_back(vertexIndex[1]);
@@ -91,6 +112,19 @@ Mesh readMeshObj(std::string path) {
 			normalIndices.push_back(normalIndex[1]);
 			normalIndices.push_back(normalIndex[2]);
 		}
+	}
+
+	//Find pairs of the half edges
+	mesh.HalfEdgeArray.resize(heIndices.size());
+	for (int i = 0; i < mesh.FacesArray.size(); ++i) {
+		int v[3] = { mesh.FacesArray[i].v[0], mesh.FacesArray[i].v[1], mesh.FacesArray[i].v[2] };
+		int i0 = getHalfEdgeIndex(v[2], v[0], heIndices);
+		int i1 = getHalfEdgeIndex(v[0], v[1], heIndices);
+		int i2 = getHalfEdgeIndex(v[1], v[2], heIndices);
+
+		mesh.HalfEdgeArray[i0] = MeshHalfEdge(getHalfEdgeIndex(v[0], v[2], heIndices));
+		mesh.HalfEdgeArray[i1] = MeshHalfEdge(getHalfEdgeIndex(v[1], v[0], heIndices));
+		mesh.HalfEdgeArray[i2] = MeshHalfEdge(getHalfEdgeIndex(v[2], v[1], heIndices));
 	}
 
 	file.close();
