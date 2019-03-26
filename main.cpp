@@ -17,7 +17,8 @@ void printDetails(Mesh mesh) {
 
 int main() {
 	try {
-		Mesh mesh = readMesh("test.obj", MeshType::OBJ);
+		//Mesh mesh = readMesh("test.obj", MeshType::OBJ);
+		Mesh mesh = readMesh("test.ply", MeshType::PLY);
 
 		std::cout << "Before subdivision" << std::endl;
 
@@ -33,7 +34,8 @@ int main() {
 
 	}
 	catch (std::invalid_argument e) {
-		std::cout << "Oops";
+		std::cout << "Oops" << std::endl;
+		std::cout << e.what() << std::endl;
 	}
 
 	std::cin.get();
