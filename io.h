@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <tuple>
+#include <set>
 
 #include "helper.h"
 #include "mesh.h"
@@ -11,7 +12,8 @@
 
 enum MeshType {
 	OBJ,
-	PLY
+	PLY,
+	STL
 };
 
 int getHalfEdgeIndex(int vertex0, int vertex1, std::vector<std::pair<int, int>> indices) {
@@ -136,6 +138,91 @@ Mesh readMeshObj(std::string path) {
 	return mesh;
 }
 
+Mesh readMeshStl(std::string path) {
+	Mesh mesh = Mesh();
+
+	std::vector<std::pair<int, int>> heIndices;
+
+	std::ifstream file;
+	file.open(path);
+
+	if (!file.is_open()) {
+		throw std::invalid_argument("Impossible to open the file!");
+	}
+
+	std::string line;
+
+	std::getline(file, line);
+
+	if (wordsInLine(line)[0] != "solid") {
+		throw std::invalid_argument("An STL file must start with the keyword 'solid'!");
+	}
+
+	//MeshFace face = MeshFace();
+
+	int verticesRead = 0;
+	std::set<MeshVertex> vertices;
+
+	while (std::getline(file, line)) {
+		std::vector<std::string> content = wordsInLine(line);
+
+		if (content[0] == "facet" && content[1] == "normal") {
+			Point3D normal = Point3D(std::stod(content[2]), std::stod(content[3]), std::stod(content[4]));
+			mesh.NormalsArray.push_back(normal);
+
+			std::getline(file, line); // outer loop
+
+			int vertexIndex[3];
+			MeshVertex debug[3];
+
+			for (int i = 0; i < 3; i++) {
+				std::getline(file, line);
+
+				vertexIndex[i] = verticesRead;
+
+				std::vector<std::string > vertexRow = wordsInLine(line);
+
+				MeshVertex vertex = MeshVertex(std::stod(vertexRow[1]), std::stod(vertexRow[2]), std::stod(vertexRow[3]));
+				debug[i] = vertex;
+				//if (vertices.find(vertex) != vertices.end()) {
+				//if(std::find(vertices.begin(), vertices.end(), vertex) != vertices.end()){
+				bool found = false;
+
+				for (int ii = 0; ii < verticesRead; ii++) {
+					if (mesh.VerticesArray[ii] == vertex) {
+						found = true;
+						vertexIndex[i] = ii;
+					}
+				}
+
+				if(!found){
+					//vertices.insert(vertex);
+					mesh.VerticesArray.push_back(vertex);
+					verticesRead++;
+				}
+			}
+
+			heIndices.push_back(std::make_pair(vertexIndex[0], vertexIndex[1]));
+			heIndices.push_back(std::make_pair(vertexIndex[1], vertexIndex[2]));
+			heIndices.push_back(std::make_pair(vertexIndex[2], vertexIndex[0]));
+
+			mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
+			mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[2], vertexIndex[0], heIndices);
+			mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[0], vertexIndex[1], heIndices);
+			mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[1], vertexIndex[2], heIndices);
+
+			std::getline(file, line); // endloop
+
+			std::getline(file, line); // endfacet 
+
+		}
+	}
+
+	file.close();
+
+	return mesh;
+}
+
 Mesh readMeshPly(std::string path) {
 	Mesh mesh = Mesh();
 	EasyAsPLY::PlyReader reader;
@@ -202,6 +289,9 @@ Mesh readMesh(std::string path, MeshType type) {
 		break;
 	case PLY:
 		return readMeshPly(path);
+		break;
+	case STL:
+		return readMeshStl(path);
 		break;
 	default:
 		throw std::invalid_argument("Unknown type");
