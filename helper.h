@@ -1,4 +1,7 @@
 #pragma once
+
+#include <cmath>
+
 class Point2D {
 public:
 	double x;
@@ -97,7 +100,7 @@ public:
 
 	// c1 = a2b3 - a3b2
 	// c2 = a3b1 - a1b3
-	// c3 = a1b2 - a2b1	
+	// c3 = a1b2 - a2b1
 	Vector crossProduct(const Vector& v) {
 		Vector result;
 		result.x = y * v.z - z * v.y;

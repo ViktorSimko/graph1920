@@ -8,7 +8,7 @@
 
 #include "helper.h"
 #include "mesh.h"
-#include "third_party_libs/easy_as_ply/PlyReader.h"
+// #include "third_party_libs/easy_as_ply/PlyReader.h"
 
 enum MeshType {
 	OBJ,
@@ -46,7 +46,7 @@ void initHalfEdges(Mesh& mesh, std::vector<std::pair<int, int>> heIndices) {
 */
 Mesh readMeshObj(std::string path) {
 	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
-	
+
 	std::vector<std::pair<int, int>> heIndices;
 
 	Mesh mesh = Mesh();
@@ -213,16 +213,16 @@ Mesh readMeshStl(std::string path) {
 
 			std::getline(file, line); // endloop
 
-			std::getline(file, line); // endfacet 
+			std::getline(file, line); // endfacet
 
 		}
 
 	file.close();
 
 	return mesh;
-}
+}}
 
-Mesh readMeshPly(std::string path) {
+/* Mesh readMeshPly(std::string path) {
 	Mesh mesh = Mesh();
 	EasyAsPLY::PlyReader reader;
 	std::vector<std::pair<int, int>> heIndices;
@@ -252,7 +252,7 @@ Mesh readMeshPly(std::string path) {
 		for (int i = 0, n = faces->size(); i < n; i++) {
 			EasyAsPLY::PlyElement* face = faces->at(i);
 			std::string face_content = faces->at(i)->GetProperty(idx)->GetValue<std::string>();
-			
+
 			std::vector<std::string> content = wordsInLine(face_content);
 
 			int vertexIndex[3] = { std::stoi(content[0]), std::stoi(content[1]), std::stoi(content[2])};
@@ -278,7 +278,7 @@ Mesh readMeshPly(std::string path) {
 	initHalfEdges(mesh, heIndices);
 
 	return mesh;
-}
+} */
 
 Mesh readMesh(std::string path, MeshType type) {
 	switch (type)
@@ -286,9 +286,9 @@ Mesh readMesh(std::string path, MeshType type) {
 	case OBJ:
 		return readMeshObj(path);
 		break;
-	case PLY:
+/* 	case PLY:
 		return readMeshPly(path);
-		break;
+		break; */
 	case STL:
 		return readMeshStl(path);
 		break;
