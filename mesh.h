@@ -66,7 +66,7 @@ public:
 
 class MeshHalfEdge {
 public:
-	int pairHalfEdgeIndex; // A pár half-edge indexe vagy -1 ha szélsõ
+	int pairHalfEdgeIndex; // A pï¿½r half-edge indexe vagy -1 ha szï¿½lsï¿½
 
 	MeshHalfEdge() {
 		pairHalfEdgeIndex = -1;

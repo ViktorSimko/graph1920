@@ -216,7 +216,6 @@ Mesh readMeshStl(std::string path) {
 			std::getline(file, line); // endfacet 
 
 		}
-	}
 
 	file.close();
 
