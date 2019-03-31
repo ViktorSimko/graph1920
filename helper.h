@@ -1,36 +1,33 @@
 #pragma once
+
+#define EPSILON 0.0001
+
 class Point2D {
 public:
-	double x;
-	double y;
+	double x, y;
 
 	Point2D() {
-		x = 0;
-		y = 0;
+		x = y = 0;
 	}
 
-	Point2D(double x, double y) {
-		this->x = x;
-		this->y = y;
+	Point2D(double _x, double _y) {
+		x = _x;
+		y = _y;
 	}
 };
 
 class Point3D {
 public:
-	double x;
-	double y;
-	double z;
+	double x, y, z;
 
 	Point3D() {
-		x = 0;
-		y = 0;
-		z = 0;
+		x = y = z = 0;
 	}
 
-	Point3D(double x, double y, double z) {
-		this->x = x;
-		this->y = y;
-		this->z = z;
+	Point3D(double _x, double _y, double _z) {
+		x = _x;
+		y = _y;
+		z = _z;
 	}
 };
 
@@ -38,17 +35,20 @@ class Vector {
 public:
 	double x, y, z;
 
-
 	Vector() {
-		x = 0.0;
-		y = 0.0;
-		z = 0.0;
+		x = y = z = 0.0;
 	}
 
-	Vector(double x, double y, double z) {
-		this->x = x;
-		this->y = y;
-		this->z = z;
+	Vector(double _x, double _y, double _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+
+	Vector(const Point3D& p) {
+		x = p.x;
+		y = p.y;
+		z = p.z;
 	}
 
 	void operator=(const Vector& v) {
@@ -57,42 +57,53 @@ public:
 		z = v.z;
 	}
 
-	double operator*(const Vector& v) {
-		double result = x * v.x + y * v.y + z * v.z;
-
-		return result;
+	Vector operator+(const Vector& v) {
+		auto res = Vector(x + v.x, y + v.y, z + v.z);
+		return res;
 	}
 
 	Vector operator-(const Vector& v) {
-		Vector result;
-
-		result.x = x - v.x;
-		result.y = y - v.y;
-		result.z = z - v.z;
+		auto res = Vector(x - v.x, y - v.y, z - v.z);
+		return res;
 	}
 
-	double norm() {
-		//double norm = 0.0;
-
-		//norm = sqrt((*this) * v);
-
-		//return norm;
-		return sqrt((*this) * (*this));
+	Vector operator-() {
+		auto res = Vector(-x, -y, -z);
+		return res;
 	}
 
-	void makeNorm() {
-		double norm_ = this->norm();
-
-		x /= norm_;
-		y /= norm_;
-		z /= norm_;
-
+	Vector operator*(double d) {
+		auto res = Vector(x * d, y * d, z * d);
+		return res;
 	}
 
-	void divide(double div) {
-		x /= div;
-		y /= div;
-		z /= div;
+	Vector operator/(double d) {
+		auto res = Vector(x / d, y / d, z / d);
+		return res;
+	}
+
+	bool operator==(const Vector& v) {
+		auto res = (-EPSILON < x - v.x && x - v.x < EPSILON)
+			&& (-EPSILON < y - v.y && y - v.y < EPSILON)
+			&& (-EPSILON < z - v.z && z - v.z < EPSILON);
+		return  res;
+	}
+
+	double operator*(const Vector& v) {//WTF?
+		auto res = x * v.x + y * v.y + z * v.z;
+		return res;
+	}
+
+	void normalize() {
+		double len = length();
+		x /= len;
+		y /= len;
+		z /= len;
+	}
+
+	double length() {
+		auto res = sqrtf(x * x + y * y + z * z);
+		return res;
 	}
 
 	// c1 = a2b3 - a3b2
@@ -107,36 +118,28 @@ public:
 		return result;
 	}
 
-	Vector(Point3D p) {
-		this->x = p.x;
-		this->y = p.y;
-		this->z = p.z;
-	}
-
-	Point3D asPoint() {
-		return Point3D(x, y, z);
+	Point3D toPoint3D() {
+		auto res = Point3D(x, y, z);
+		return res;
 	}
 };
 
 class Color {
 public:
-	int r;
-	int g;
-	int b;
+	int r, g, b;
 
 	Color() {
-
+		r = g = b = 0;
 	}
 
-	Color(int r, int g, int b) {
-		this->r = r;
-		this->g = g;
-		this->b = b;
+	Color(int _r, int _g, int _b) {
+		r = _r;
+		g = _g;
+		b = _b;
 	}
 };
 
-
-std::vector<std::string> wordsInLine(std::string line, char separator=' ') {
+std::vector<std::string> wordsInLine(std::string line, char separator = ' ') {
 	std::vector<std::string> words;
 
 	std::string word = "";
