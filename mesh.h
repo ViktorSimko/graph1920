@@ -107,5 +107,15 @@ public:
 	vector<MeshHalfEdge> HalfEdgeArray; // HA
 
 	vector<Triangle> Triangles;
+	vector<Point2D> UVArray;
+	vector<Point3D> NormalsArray;
+
+	Mesh() {
+		faceColor = LIGHT_CREAM_COLOR;
+		pointColor = HEAVY_BROWN_COLOR;
+		//VerticesArray.reserve();
+		//FacesArray.reserve();
+	}
+
 
 };
