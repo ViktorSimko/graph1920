@@ -1,10 +1,10 @@
 #pragma once
-
-using namespace std;
-
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <stdio.h>
+#include <time.h>
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -15,38 +15,35 @@ using namespace std;
 Color LIGHT_CREAM_COLOR = Color(0, 0, 0);
 Color HEAVY_BROWN_COLOR = Color(0, 0, 0);
 
+using namespace std;
+
 class MeshVertex {
 public:
-	double x, y, z;
-	//bool valid;
-	int halfEdgeIndex; // vh - index of a half-edge ending on this vertex
+	float x, y, z;
+	int halfEdgeIndex;
 	int valence;
-	std::vector<int> heIndices; //Half-edge indices starting on this vertex
+	std::vector<int> heIndices;
 
 	MeshVertex() {
-		x = 0.0;
-		y = 0.0;
-		z = 0.0;
-		//valid = false;
+		x = y = z = 0.f;
+		halfEdgeIndex = -1;
 		valence = 0;
-		heIndices.clear();
 	}
 
-	MeshVertex(double x, double y, double z) {
-		this->x = x;
-		this->y = y;
-		this->z = z;
+	MeshVertex(float _x, float _y, float _z) {
+		x = _x;
+		y = _y;
+		z = _z;
+		halfEdgeIndex = -1;
 		valence = 0;
-		heIndices.clear();
 	}
 
-	MeshVertex(double x, double y, double z, int edgeIndex) {
-		this->x = x;
-		this->y = y;
-		this->z = z;
-		this->halfEdgeIndex = edgeIndex;
+	MeshVertex(float _x, float _y, float _z, int _halfEdgeIndex) {
+		x = _x;
+		y = _y;
+		z = _z;
+		halfEdgeIndex = _halfEdgeIndex;
 		valence = 0;
-		heIndices.clear();
 	}
 
 	void operator=(const Point3D& point) {
@@ -55,11 +52,16 @@ public:
 		z = point.z;
 	}
 
+	void operator=(const Vector& v) {
+		x = v.x;
+		y = v.y;
+		z = v.z;
+	}
+
 	void operator=(const MeshVertex& v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
-		//valid = v.valid;
 		halfEdgeIndex = v.halfEdgeIndex;
 		heIndices = v.heIndices;
 		valence = v.valence;
@@ -72,10 +74,8 @@ public:
 	}
 
 	bool operator==(const MeshVertex& v) {
-		if (x == v.x && y == v.y && z == v.z) {
-			return true;
-		}
-		return false;
+		auto res = x == v.x && y == v.y && z == v.z;
+		return res;
 	}
 
 	MeshVertex operator+(const MeshVertex& v) {
@@ -89,12 +89,17 @@ public:
 	MeshVertex operator/(const float delta) {
 		return MeshVertex(x / delta, y / delta, z / delta, halfEdgeIndex);
 	}
+
+	Vector toVector() {
+		auto res = Vector(x, y, z);
+		return res;
+	}
 };
 
 
 class MeshHalfEdge {
 public:
-	int pairHalfEdgeIndex; // A pï¿½r half-edge indexe vagy -1 ha szï¿½lsï¿½
+	int pairHalfEdgeIndex; // A pár half-edge indexe vagy -1 ha szélsõ
 	int faceIndex;
 	int vIndex; //The index of vertex at the starting of the edge
 	int next;
@@ -106,6 +111,11 @@ public:
 
 	MeshHalfEdge(int pairIndex) {
 		pairHalfEdgeIndex = pairIndex;
+	}
+
+	bool operator==(const MeshHalfEdge& v) {
+		auto res = pairHalfEdgeIndex == v.pairHalfEdgeIndex;
+		return res;
 	}
 };
 
@@ -133,6 +143,7 @@ public:
 		v[2] = v2;
 		v[3] = v3;
 	}
+
 };
 
 
@@ -159,5 +170,17 @@ public:
 		//FacesArray.reserve();
 	}
 
+	void addNoise() {
+		srand(time(NULL));
+		for (int i = 0; i < VerticesArray.size(); ++i) {
+			float x = (rand() % 10 - 5) / 150.f;
+			float y = (rand() % 10 - 5) / 150.f;
+			float z = (rand() % 10 - 5) / 150.f;
+
+			VerticesArray[i].x += x;
+			VerticesArray[i].y += y;
+			VerticesArray[i].z += z;
+		}
+	}
 
 };
