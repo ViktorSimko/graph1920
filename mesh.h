@@ -12,8 +12,8 @@ using namespace std;
 #include "helper.h"
 #include "triangle.h"
 
-Color LIGHT_CREAM_COLOR = Color(0, 0, 0);
-Color HEAVY_BROWN_COLOR = Color(0, 0, 0);
+inline Color LIGHT_CREAM_COLOR = Color(0, 0, 0);
+inline Color HEAVY_BROWN_COLOR = Color(0, 0, 0);
 
 class MeshVertex {
 public:

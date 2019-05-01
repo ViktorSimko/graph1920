@@ -16,7 +16,7 @@ enum MeshType {
 	STL
 };
 
-int getHalfEdgeIndex(int vertex0, int vertex1, std::vector<std::pair<int, int>> indices) {
+inline int getHalfEdgeIndex(int vertex0, int vertex1, std::vector<std::pair<int, int>> indices) {
 
 	for (int i = 0; i < indices.size(); ++i) {
 		if (indices[i].first == vertex0 && indices[i].second == vertex1) {
@@ -26,7 +26,7 @@ int getHalfEdgeIndex(int vertex0, int vertex1, std::vector<std::pair<int, int>> 
 	return -1;
 }
 
-void initHalfEdges(Mesh& mesh, std::vector<std::pair<int, int>> heIndices) {
+inline void initHalfEdges(Mesh& mesh, std::vector<std::pair<int, int>> heIndices) {
 	//Find pairs of the half edges
 	mesh.HalfEdgeArray.resize(heIndices.size());
 	for (int i = 0; i < mesh.FacesArray.size(); ++i) {
@@ -44,7 +44,7 @@ void initHalfEdges(Mesh& mesh, std::vector<std::pair<int, int>> heIndices) {
 /*
 	http://www.opengl-tutorial.org/hu/beginners-tutorials/tutorial-7-model-loading/
 */
-Mesh readMeshObj(std::string path) {
+inline Mesh readMeshObj(std::string path) {
 	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 
 	std::vector<std::pair<int, int>> heIndices;
@@ -138,7 +138,7 @@ Mesh readMeshObj(std::string path) {
 	return mesh;
 }
 
-Mesh readMeshStl(std::string path) {
+inline Mesh readMeshStl(std::string path) {
 	Mesh mesh = Mesh();
 
 	std::vector<std::pair<int, int>> heIndices;
@@ -280,7 +280,7 @@ Mesh readMeshStl(std::string path) {
 	return mesh;
 } */
 
-Mesh readMesh(std::string path, MeshType type) {
+inline Mesh readMesh(std::string path, MeshType type) {
 	switch (type)
 	{
 	case OBJ:
