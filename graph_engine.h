@@ -4,6 +4,9 @@
 #include "io.h"
 #include "mesh.h"
 #include "loop_schema.h"
+#include "catmull_clark_schema.h"
+#include "butterfly_schema.h"
+#include "squareroot3_schema.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>

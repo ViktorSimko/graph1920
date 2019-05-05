@@ -34,7 +34,7 @@ MainWidget::MainWidget(QWidget *parent) :
    connect(button_reset, SIGNAL (released()), this, SLOT (reset()));
 
    setLayout(mainLayout);
-   setWindowTitle(tr("Connecting buttons to processes.."));
+   setWindowTitle(tr("Graph2019"));
 }
 
 void MainWidget::applyLoop() {

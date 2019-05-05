@@ -17,19 +17,19 @@ void graph_engine::applyLoopSchema() {
 }
 
 void graph_engine::applyButterflySchema() {
-    LoopSchema schema;
+    ButterflySchema schema;
     mesh_object = schema.apply(mesh_object);
     glutPostRedisplay();
 }
 
 void graph_engine::applySquarerootSchema() {
-    LoopSchema schema;
+    SquareRoot3 schema;
     mesh_object = schema.apply(mesh_object);
     glutPostRedisplay();
 }
 
 void graph_engine::applyCatmullSchema() {
-    LoopSchema schema;
+    CatmullClark schema;
     mesh_object = schema.apply(mesh_object);
     glutPostRedisplay();
 }
