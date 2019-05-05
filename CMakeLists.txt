@@ -15,6 +15,17 @@ set (Graph2019Bin_src ${PROJECT_SOURCE_DIR}/main_qt.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/mainwidget.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/oglwidget.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/graph_engine.cpp)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyData.cpp)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyData.h)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyElement.cpp)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyElement.h)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyFormat.h)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyProperty.cpp)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyProperty.h)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyReader.cpp)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyReader.h)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyWriter.cpp)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyWriter.h)
 
 qt5_wrap_cpp(Graph2019_mainwidget_moc ${PROJECT_SOURCE_DIR}/mainwidget.h)
 list (APPEND Graph2019Bin_src ${Graph2019_mainwidget_moc})
@@ -26,12 +37,12 @@ list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/graph_engine.h)
 include_directories (${PROJECT_SOURCE_DIR})
 include_directories (${PROJECT_BINARY_DIR})
 
-#add_library (Graph2019Lib SHARED 
+#add_library (Graph2019Lib SHARED
 #    ${Graph2019_src}
 #    ${Graph2019_hdr_moc}
 #    ${Graph2019_ui_moc}
 #)
-#target_link_libraries (Graph2019Lib Qt5::Widgets) 
+#target_link_libraries (Graph2019Lib Qt5::Widgets)
 
 add_executable(Graph2019 ${Graph2019Bin_src})
 target_link_libraries (Graph2019 Qt5::Widgets Qt5::OpenGL ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
