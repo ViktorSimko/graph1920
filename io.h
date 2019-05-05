@@ -17,7 +17,7 @@ enum MeshType {
 	STL
 };
 
-void initHalfEdges(Mesh& mesh) {
+inline void initHalfEdges(Mesh& mesh) {
 
 	std::map<std::pair<int, int>, int> heIndices;
 
@@ -151,7 +151,7 @@ void initHalfEdges(Mesh& mesh) {
 /*
 	http://www.opengl-tutorial.org/hu/beginners-tutorials/tutorial-7-model-loading/
 */
-Mesh readMeshObj(std::string path) {
+inline Mesh readMeshObj(std::string path) {
 	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 
 	std::map<std::pair<int, int>, int> heIndices;
@@ -284,7 +284,7 @@ Mesh readMeshObj(std::string path) {
 	return mesh;
 }
 
-Mesh readMeshStl(std::string path) {
+inline Mesh readMeshStl(std::string path) {
 	Mesh mesh = Mesh();
 
 	std::map<std::pair<int, int>, int> heIndices;
@@ -369,88 +369,88 @@ Mesh readMeshStl(std::string path) {
 	initHalfEdges(mesh);
 
 	return mesh;
-	}
+}
 
-	Mesh readMeshPly(std::string path) {
-		Mesh mesh = Mesh();
-		EasyAsPLY::PlyReader reader;
-		std::map<std::pair<int, int>, int> heIndices;
+inline Mesh readMeshPly(std::string path) {
+	Mesh mesh = Mesh();
+	EasyAsPLY::PlyReader reader;
+	std::map<std::pair<int, int>, int> heIndices;
 
-		reader.Open();
+	reader.Open();
 
-		if (reader.Read(path)) {
-			// Get all the vertices
-			int vertexIndex = reader.GetFormat()->GetElementIndex("vertex");
-			std::vector<EasyAsPLY::PlyElement*>* vertices = reader.GetData()->GetElements(vertexIndex);
+	if (reader.Read(path)) {
+		// Get all the vertices
+		int vertexIndex = reader.GetFormat()->GetElementIndex("vertex");
+		std::vector<EasyAsPLY::PlyElement*>* vertices = reader.GetData()->GetElements(vertexIndex);
 
-			int xIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("x");
-			int yIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("y");
-			int zIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("z");
+		int xIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("x");
+		int yIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("y");
+		int zIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("z");
 
-			for (int i = 0, n = vertices->size(); i < n; i++) {
-				EasyAsPLY::PlyElement* vertex = vertices->at(i);
+		for (int i = 0, n = vertices->size(); i < n; i++) {
+			EasyAsPLY::PlyElement* vertex = vertices->at(i);
 
-				mesh.VerticesArray.push_back(MeshVertex(vertex->GetProperty(xIndex)->GetValue<double>(), vertex->GetProperty(yIndex)->GetValue<double>(), vertex->GetProperty(zIndex)->GetValue<double>()));
-			}
-
-			int faceIndex = reader.GetFormat()->GetElementIndex("face");
-			std::vector<EasyAsPLY::PlyElement*>* faces = reader.GetData()->GetElements(faceIndex);
-
-			int idx = reader.GetFormat()->GetElement("face")->GetPropertyIndex("vertex_indices");
-
-			for (int i = 0, n = faces->size(); i < n; i++) {
-				EasyAsPLY::PlyElement* face = faces->at(i);
-				std::string face_content = faces->at(i)->GetProperty(idx)->GetValue<std::string>();
-
-				std::vector<std::string> content = wordsInLine(face_content);
-
-				int vertexIndex[3] = { std::stoi(content[0]), std::stoi(content[1]), std::stoi(content[2]) };
-
-				mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
-
-				heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])] = heIndices.size();
-				heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])] = heIndices.size();
-				heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])] = heIndices.size();
-
-				//for loop scheme
-				mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])];
-				mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])];
-				mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])];
-			}
-
-		}
-		else {
-			throw std::invalid_argument("Impossible to open the file!");
+			mesh.VerticesArray.push_back(MeshVertex(vertex->GetProperty(xIndex)->GetValue<double>(), vertex->GetProperty(yIndex)->GetValue<double>(), vertex->GetProperty(zIndex)->GetValue<double>()));
 		}
 
-		reader.Close();
+		int faceIndex = reader.GetFormat()->GetElementIndex("face");
+		std::vector<EasyAsPLY::PlyElement*>* faces = reader.GetData()->GetElements(faceIndex);
 
-		initHalfEdges(mesh);
+		int idx = reader.GetFormat()->GetElement("face")->GetPropertyIndex("vertex_indices");
 
-		return mesh;
-	}
+		for (int i = 0, n = faces->size(); i < n; i++) {
+			EasyAsPLY::PlyElement* face = faces->at(i);
+			std::string face_content = faces->at(i)->GetProperty(idx)->GetValue<std::string>();
 
-	Mesh readMesh(std::string path, MeshType type) {
-		switch (type)
-		{
-		case OBJ:
-			return readMeshObj(path);
-			break;
-		case PLY:
-			return readMeshPly(path);
-			break;
-		case STL:
-			return readMeshStl(path);
-			break;
-		default:
-			throw std::invalid_argument("Unknown type");
+			std::vector<std::string> content = wordsInLine(face_content);
+
+			int vertexIndex[3] = { std::stoi(content[0]), std::stoi(content[1]), std::stoi(content[2]) };
+
+			mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
+
+			heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])] = heIndices.size();
+			heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])] = heIndices.size();
+			heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])] = heIndices.size();
+
+			//for loop scheme
+			mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])];
+			mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])];
+			mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])];
 		}
+
+	}
+	else {
+		throw std::invalid_argument("Impossible to open the file!");
 	}
 
+	reader.Close();
+
+	initHalfEdges(mesh);
+
+	return mesh;
+}
+
+inline Mesh readMesh(std::string path, MeshType type) {
+	switch (type)
+	{
+	case OBJ:
+		return readMeshObj(path);
+		break;
+	case PLY:
+		return readMeshPly(path);
+		break;
+	case STL:
+		return readMeshStl(path);
+		break;
+	default:
+		throw std::invalid_argument("Unknown type");
+	}
+}
 
 
 
-void saveMeshObj(std::string path, Mesh mesh) {
+
+inline void saveMeshObj(std::string path, Mesh mesh) {
 	std::ofstream outFile;
 	outFile.open(path);
 
@@ -472,7 +472,7 @@ void saveMeshObj(std::string path, Mesh mesh) {
 	outFile.close();
 }
 
-void saveMeshStl(std::string path, Mesh mesh) {
+inline void saveMeshStl(std::string path, Mesh mesh) {
 	std::ofstream outFile;
 	outFile.open(path);
 
@@ -497,7 +497,7 @@ void saveMeshStl(std::string path, Mesh mesh) {
 	outFile.close();
 }
 
-void saveMeshPly(std::string path, Mesh mesh) {
+inline void saveMeshPly(std::string path, Mesh mesh) {
 	std::ofstream outFile;
 	outFile.open(path);
 
@@ -524,7 +524,7 @@ void saveMeshPly(std::string path, Mesh mesh) {
 	outFile.close();
 }
 
-void saveMesh(std::string path, Mesh mesh, MeshType type) {
+inline void saveMesh(std::string path, Mesh mesh, MeshType type) {
 	switch (type)
 	{
 	case OBJ:

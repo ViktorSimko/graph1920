@@ -11,7 +11,7 @@ private:
 
 	std::vector<int> EM;
 
-	void computeNewEdgeVertices(Mesh &mesh) {
+	inline void computeNewEdgeVertices(Mesh &mesh) {
 		// Initialize all to -1	to indicate half-edge is not mapped yet
 		EM.resize(mesh.HalfEdgeArray.size(), -1);
 
@@ -47,7 +47,7 @@ private:
 		}
 	}
 
-	void connectNewEdgeVertices(Mesh& mesh) {
+	inline void connectNewEdgeVertices(Mesh& mesh) {
 		mesh.FacesArray.clear();
 
 		int v[3];

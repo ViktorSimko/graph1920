@@ -140,7 +140,7 @@ public:
 	}
 };
 
-std::vector<std::string> wordsInLine(std::string line, char separator = ' ') {
+inline std::vector<std::string> wordsInLine(std::string line, char separator = ' ') {
 	std::vector<std::string> words;
 
 	std::string word = "";
