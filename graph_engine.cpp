@@ -7,31 +7,26 @@ void graph_engine::initObject() {
 
 void graph_engine::reset() {
     mesh_object = original_mesh;
-    glutPostRedisplay();
 }
 
 void graph_engine::applyLoopSchema() {
     LoopSchema schema;
     mesh_object = schema.apply(mesh_object);
-    glutPostRedisplay();
 }
 
 void graph_engine::applyButterflySchema() {
     ButterflySchema schema;
     mesh_object = schema.apply(mesh_object);
-    glutPostRedisplay();
 }
 
 void graph_engine::applySquarerootSchema() {
     SquareRoot3 schema;
     mesh_object = schema.apply(mesh_object);
-    glutPostRedisplay();
 }
 
 void graph_engine::applyCatmullSchema() {
     CatmullClark schema;
     mesh_object = schema.apply(mesh_object);
-    glutPostRedisplay();
 }
 
 void graph_engine::drawMesh() {
