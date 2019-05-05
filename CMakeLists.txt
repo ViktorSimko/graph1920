@@ -17,7 +17,7 @@ find_package(GLUT REQUIRED)
 #set (Graph2019_hdr ${PROJECT_SOURCE_DIR}/mainwindow.h)
 #set (Graph2019_ui  ${PROJECT_SOURCE_DIR}/mainwindow.ui)
 
-set (Graph2019Bin_src ${PROJECT_SOURCE_DIR}/main_qt.cpp)
+set (Graph2019Bin_src ${PROJECT_SOURCE_DIR}/main.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/mainwidget.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/oglwidget.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/graph_engine.cpp)
