@@ -32,11 +32,13 @@ void graph_engine::applyCatmullSchema() {
 void graph_engine::drawMesh() {
 
     Color color = mesh_object.faceColor;
+    int end = mesh_object.quadratic ? 4 : 3;
     for (auto face : mesh_object.FacesArray)
     {
         glBegin(GL_POLYGON);
-        for (int vertexIdx : face.v)
+        for (int i = 0; i < end; i++)
         {
+            int vertexIdx = face.v[i];
             MeshVertex v = mesh_object.VerticesArray[vertexIdx];
             //glColor3i(color.r, color.g, color.b);
             glColor3f(1.0, 0.0, 0.0);
@@ -48,8 +50,9 @@ void graph_engine::drawMesh() {
     for (auto face : mesh_object.FacesArray)
     {
         glBegin(GL_LINE_LOOP);
-        for (int vertexIdx : face.v)
+        for (int i = 0; i < end; i++)
         {
+            int vertexIdx = face.v[i];
             MeshVertex v = mesh_object.VerticesArray[vertexIdx];
             //glColor3i(color.r, color.g, color.b);
             glLineWidth(10.0);
