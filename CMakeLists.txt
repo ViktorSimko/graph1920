@@ -2,6 +2,8 @@
 cmake_minimum_required (VERSION 2.8.12)
 project (Graph2019)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 find_package (Qt5Widgets)
 find_package (Qt5OpenGL)
 find_package(OpenGL REQUIRED)

@@ -30,8 +30,8 @@ protected:
 private:
     graph_engine* ge;
 
-    int rotationX, rotationY;
-    float last_x, last_y;
+    int rotationX = 0, rotationY = 0;
+    float last_x = 0.0, last_y = 0.0;
 };
 
 #endif // OGLWIDGET_H
