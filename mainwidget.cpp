@@ -34,31 +34,36 @@ MainWidget::MainWidget(QWidget *parent) :
    connect(button_reset, SIGNAL (released()), this, SLOT (reset()));
 
    setLayout(mainLayout);
-   setWindowTitle(tr("Connecting buttons to processes.."));
+   setWindowTitle(tr("Graph2019"));
 }
 
 void MainWidget::applyLoop() {
    std::cout << "applying loop schema" << std::endl;
    ge->applyLoopSchema();
+   oglWidget_->repaint();
 }
 
 void MainWidget::applyButterfly() {
    std::cout << "applying butterfly schema" << std::endl;
    ge->applyButterflySchema();
+   oglWidget_->repaint();
 }
 
 void MainWidget::applySquareroot() {
    std::cout << "applying squareroot 3 schema" << std::endl;
    ge->applySquarerootSchema();
+   oglWidget_->repaint();
 }
 
 void MainWidget::applyCatmull() {
    std::cout << "applying catmull clark schema" << std::endl;
    ge->applyCatmullSchema();
+   oglWidget_->repaint();
 }
 
 void MainWidget::reset() {
    ge->reset();
+   oglWidget_->repaint();
 }
 
 // Destructor
