@@ -40,7 +40,7 @@ void graph_engine::drawMesh() {
             MeshVertex v = mesh_object.VerticesArray[vertexIdx];
             //glColor3i(color.r, color.g, color.b);
             glColor3f(1.0, 0.0, 0.0);
-            glVertex3d(v.x / 3.0, v.y / 3.0, v.z / 3.0);
+            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
         }
         glEnd();
     }
@@ -52,9 +52,9 @@ void graph_engine::drawMesh() {
         {
             MeshVertex v = mesh_object.VerticesArray[vertexIdx];
             //glColor3i(color.r, color.g, color.b);
-            glLineWidth(10.0);
+            glLineWidth(15.0);
             glColor3f(0.0, 0.0, 0.0);
-            glVertex3d(v.x / 3.0, v.y / 3.0, v.z / 3.0);
+            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
             //printf("%lf %lf %lf\n", v.x, v.y, v.z);
         }
         glEnd();
