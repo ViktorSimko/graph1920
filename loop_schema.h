@@ -13,6 +13,10 @@ private:
 	vector<MeshFace> copyNF;
 	vector<MeshHalfEdge> copyHA;
 
+	float _a, _b, _c, _d;
+
+
+
 	double b(int n = 4) {
 		return 1.0 / 64.0 * (40 - pow((3 + 2 * cos(2 * M_PI / (double)n)), 2));
 	}
@@ -71,16 +75,16 @@ private:
 
 				// 3f megy v0->v1 3f + 1 megy v1->v2 3f + 2 megy v2->v0 sorrendben
 
-				newVertex.x = (3.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 1) % 3]].x +
-					(3.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 1) % 3]].x
-					+ (1.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 2) % 3]].x +
-					(1.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 2) % 3]].x;
+				newVertex.x = (_a)* mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 1) % 3]].x +
+					(_b)* mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 1) % 3]].x
+					+ (_c)* mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 2) % 3]].x +
+					(_d)* mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 2) % 3]].x;
 
-				newVertex.y = (3.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 1) % 3]].y + (3.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 1) % 3]].y
-					+ (1.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 2) % 3]].y + (1.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 2) % 3]].y;
+				newVertex.y = (_a)* mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 1) % 3]].y + (_b)* mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 1) % 3]].y
+					+ (_c)* mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 2) % 3]].y + (_d)* mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 2) % 3]].y;
 
-				newVertex.z = (3.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 1) % 3]].z + (3.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 1) % 3]].z
-					+ (1.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 2) % 3]].z + (1.0 / 8.0) * mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 2) % 3]].z;
+				newVertex.z = (_a)* mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 1) % 3]].z + (_b)* mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 1) % 3]].z
+					+ (_c)* mesh.VerticesArray[mesh.FacesArray[faceIndex].v[(h + 2) % 3]].z + (_d)* mesh.VerticesArray[mesh.FacesArray[mesh.HalfEdgeArray[h].pairHalfEdgeIndex / 3].v[(mesh.HalfEdgeArray[h].pairHalfEdgeIndex + 2) % 3]].z;
 
 				newVertex.halfEdgeIndex = -1;
 
@@ -222,6 +226,19 @@ private:
 	}
 
 public:
+	LoopSchema() {
+		this->_a = 3.0 / 8.0;
+		this->_b = 3.0 / 8.0;
+		this->_c = 1.0 / 8.0;
+		this->_d = 1.0 / 8.0;
+	}
+
+	LoopSchema(float a, float b, float c, float d) {
+		this->_a = a;
+		this->_b = b;
+		this->_c = c;
+		this->_d = d;
+	}
 	Mesh apply(Mesh mesh) {
 		beforeAlgorithmStarts(mesh);
 

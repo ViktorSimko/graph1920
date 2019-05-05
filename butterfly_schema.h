@@ -6,6 +6,9 @@
 
 class ButterflySchema : public Schema {
 private:
+
+	float _a, _b, _c;
+
 	std::vector<int> EM;
 
 	void computeNewEdgeVertices(Mesh &mesh) {
@@ -35,8 +38,8 @@ private:
 			auto p7 = mesh.VerticesArray[p7_3.vIndex];
 			auto p8 = mesh.VerticesArray[p8_1.vIndex];
 
-			float w = 1.f / 16;
-			MeshVertex q = (p1 + p2) * 0.5 + (p3 + p4) * (2 * w) + (p5 + p6 + p7 + p8) * -w;
+			float w = 1.f / _c;
+			MeshVertex q = (p1 + p2) * _a + (p3 + p4) * (_b) + (p5 + p6 + p7 + p8) * -_c;
 
 			mesh.VerticesArray.push_back(q);
 			EM[i] = mesh.VerticesArray.size() - 1;
@@ -83,6 +86,18 @@ private:
 	}
 
 public:
+	ButterflySchema() {
+		_a = 1.0 / 2.0;
+		_b = 1.0 / 8.0;
+		_c = 1.0 / 16.0;
+	}
+
+	ButterflySchema(float a, float b, float c) {
+		_a = a;
+		_b = b;
+		_c = c;
+	}
+
 	Mesh apply(Mesh mesh) {
 		computeNewEdgeVertices(mesh);
 		connectNewEdgeVertices(mesh);

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <tuple>
 #include <set>
+#include <map>
 
 #include "helper.h"
 #include "mesh.h"
@@ -16,28 +17,134 @@ enum MeshType {
 	STL
 };
 
-int getHalfEdgeIndex(int vertex0, int vertex1, std::vector<std::pair<int, int>> indices) {
+void initHalfEdges(Mesh& mesh) {
 
-	for (int i = 0; i < indices.size(); ++i) {
-		if (indices[i].first == vertex0 && indices[i].second == vertex1) {
-			return i;
+	std::map<std::pair<int, int>, int> heIndices;
+
+	if (mesh.quadratic) {
+		for (int i = 0; i < mesh.FacesArray.size(); ++i) {
+			int v[4] = { mesh.FacesArray[i].v[0], mesh.FacesArray[i].v[1], mesh.FacesArray[i].v[2], mesh.FacesArray[i].v[3] };
+			heIndices[std::make_pair(v[0], v[1])] = heIndices.size();
+			heIndices[std::make_pair(v[1], v[2])] = heIndices.size();
+			heIndices[std::make_pair(v[2], v[3])] = heIndices.size();
+			heIndices[std::make_pair(v[3], v[0])] = heIndices.size();
+			mesh.VerticesArray[v[0]].valence = 0;
+			mesh.VerticesArray[v[1]].valence = 0;
+			mesh.VerticesArray[v[2]].valence = 0;
+			mesh.VerticesArray[v[3]].valence = 0;
+			mesh.VerticesArray[v[0]].heIndices.clear();
+			mesh.VerticesArray[v[1]].heIndices.clear();
+			mesh.VerticesArray[v[2]].heIndices.clear();
+			mesh.VerticesArray[v[3]].heIndices.clear();
+		}
+		mesh.HalfEdgeArray.resize(heIndices.size());
+		for (int i = 0; i < mesh.FacesArray.size(); ++i) {
+			int v[4] = { mesh.FacesArray[i].v[0], mesh.FacesArray[i].v[1], mesh.FacesArray[i].v[2], mesh.FacesArray[i].v[3] };
+
+			mesh.VerticesArray[v[0]].valence++;
+			mesh.VerticesArray[v[1]].valence++;
+			mesh.VerticesArray[v[2]].valence++;
+			mesh.VerticesArray[v[3]].valence++;
+			int i0 = heIndices[std::make_pair(v[3], v[0])];
+			int i1 = heIndices[std::make_pair(v[0], v[1])];
+			int i2 = heIndices[std::make_pair(v[1], v[2])];
+			int i3 = heIndices[std::make_pair(v[2], v[3])];
+			mesh.VerticesArray[v[0]].heIndices.push_back(i1);
+			mesh.VerticesArray[v[1]].heIndices.push_back(i2);
+			mesh.VerticesArray[v[2]].heIndices.push_back(i3);
+			mesh.VerticesArray[v[3]].heIndices.push_back(i0);
+
+			//Find pairs of the half edges
+			mesh.HalfEdgeArray[i0] = MeshHalfEdge(heIndices[std::make_pair(v[0], v[3])]);
+			mesh.HalfEdgeArray[i0].faceIndex = i;
+			mesh.HalfEdgeArray[i1] = MeshHalfEdge(heIndices[std::make_pair(v[1], v[0])]);
+			mesh.HalfEdgeArray[i1].faceIndex = i;
+			mesh.HalfEdgeArray[i2] = MeshHalfEdge(heIndices[std::make_pair(v[2], v[1])]);
+			mesh.HalfEdgeArray[i2].faceIndex = i;
+			mesh.HalfEdgeArray[i3] = MeshHalfEdge(heIndices[std::make_pair(v[3], v[2])]);
+			mesh.HalfEdgeArray[i3].faceIndex = i;
+
+			//Find next half edges inside the face
+			mesh.HalfEdgeArray[i0].next = heIndices[std::make_pair(v[0], v[1])];
+			mesh.HalfEdgeArray[i1].next = heIndices[std::make_pair(v[1], v[2])];
+			mesh.HalfEdgeArray[i2].next = heIndices[std::make_pair(v[2], v[3])];
+			mesh.HalfEdgeArray[i3].next = heIndices[std::make_pair(v[3], v[0])];
+
+			//Find previous half edges inside the face
+			mesh.HalfEdgeArray[i0].prev = heIndices[std::make_pair(v[2], v[3])];
+			mesh.HalfEdgeArray[i1].prev = heIndices[std::make_pair(v[3], v[0])];
+			mesh.HalfEdgeArray[i2].prev = heIndices[std::make_pair(v[0], v[1])];
+			mesh.HalfEdgeArray[i3].prev = heIndices[std::make_pair(v[1], v[2])];
+
+			//Storing vertex indices at starting points
+			mesh.HalfEdgeArray[i0].vIndex = v[3];
+			mesh.HalfEdgeArray[i1].vIndex = v[0];
+			mesh.HalfEdgeArray[i2].vIndex = v[1];
+			mesh.HalfEdgeArray[i3].vIndex = v[2];
+
+			//Storing half edge indices in faces too
+			mesh.FacesArray[i].HalfEdgeArray[0] = heIndices[std::make_pair(v[0], v[1])];
+			mesh.FacesArray[i].HalfEdgeArray[1] = heIndices[std::make_pair(v[1], v[2])];
+			mesh.FacesArray[i].HalfEdgeArray[2] = heIndices[std::make_pair(v[2], v[3])];
+			mesh.FacesArray[i].HalfEdgeArray[3] = heIndices[std::make_pair(v[3], v[0])];
 		}
 	}
-	return -1;
-}
+	else {
+		for (int i = 0; i < mesh.FacesArray.size(); ++i) {
+			int v[3] = { mesh.FacesArray[i].v[0], mesh.FacesArray[i].v[1], mesh.FacesArray[i].v[2] };
+			heIndices[std::make_pair(v[0], v[1])] = heIndices.size();
+			heIndices[std::make_pair(v[1], v[2])] = heIndices.size();
+			heIndices[std::make_pair(v[2], v[0])] = heIndices.size();
+			mesh.VerticesArray[v[0]].valence = 0;
+			mesh.VerticesArray[v[1]].valence = 0;
+			mesh.VerticesArray[v[2]].valence = 0;
+			mesh.VerticesArray[v[0]].heIndices.clear();
+			mesh.VerticesArray[v[1]].heIndices.clear();
+			mesh.VerticesArray[v[2]].heIndices.clear();
+		}
+		mesh.HalfEdgeArray.resize(heIndices.size());
+		for (int i = 0; i < mesh.FacesArray.size(); ++i) {
+			int v[3] = { mesh.FacesArray[i].v[0], mesh.FacesArray[i].v[1], mesh.FacesArray[i].v[2] };
 
-void initHalfEdges(Mesh& mesh, std::vector<std::pair<int, int>> heIndices) {
-	//Find pairs of the half edges
-	mesh.HalfEdgeArray.resize(heIndices.size());
-	for (int i = 0; i < mesh.FacesArray.size(); ++i) {
-		int v[3] = { mesh.FacesArray[i].v[0], mesh.FacesArray[i].v[1], mesh.FacesArray[i].v[2] };
-		int i0 = getHalfEdgeIndex(v[2], v[0], heIndices);
-		int i1 = getHalfEdgeIndex(v[0], v[1], heIndices);
-		int i2 = getHalfEdgeIndex(v[1], v[2], heIndices);
+			mesh.VerticesArray[v[0]].valence++;
+			mesh.VerticesArray[v[1]].valence++;
+			mesh.VerticesArray[v[2]].valence++;
+			int i0 = heIndices[std::make_pair(v[2], v[0])];
+			int i1 = heIndices[std::make_pair(v[0], v[1])];
+			int i2 = heIndices[std::make_pair(v[1], v[2])];
+			mesh.VerticesArray[v[0]].heIndices.push_back(i1);
+			mesh.VerticesArray[v[1]].heIndices.push_back(i2);
+			mesh.VerticesArray[v[2]].heIndices.push_back(i0);
 
-		mesh.HalfEdgeArray[i0] = MeshHalfEdge(getHalfEdgeIndex(v[0], v[2], heIndices));
-		mesh.HalfEdgeArray[i1] = MeshHalfEdge(getHalfEdgeIndex(v[1], v[0], heIndices));
-		mesh.HalfEdgeArray[i2] = MeshHalfEdge(getHalfEdgeIndex(v[2], v[1], heIndices));
+			//Find pairs of the half edges
+			mesh.HalfEdgeArray[i0] = MeshHalfEdge(heIndices[std::make_pair(v[0], v[2])]);
+			mesh.HalfEdgeArray[i0].faceIndex = i;
+			mesh.HalfEdgeArray[i1] = MeshHalfEdge(heIndices[std::make_pair(v[1], v[0])]);
+			mesh.HalfEdgeArray[i1].faceIndex = i;
+			mesh.HalfEdgeArray[i2] = MeshHalfEdge(heIndices[std::make_pair(v[2], v[1])]);
+			mesh.HalfEdgeArray[i2].faceIndex = i;
+
+			//Find next half edges inside the face
+			mesh.HalfEdgeArray[i0].next = heIndices[std::make_pair(v[0], v[1])];
+			mesh.HalfEdgeArray[i1].next = heIndices[std::make_pair(v[1], v[2])];
+			mesh.HalfEdgeArray[i2].next = heIndices[std::make_pair(v[2], v[0])];
+
+
+			//Find previous half edges inside the face
+			mesh.HalfEdgeArray[i0].prev = heIndices[std::make_pair(v[1], v[2])];
+			mesh.HalfEdgeArray[i1].prev = heIndices[std::make_pair(v[2], v[0])];
+			mesh.HalfEdgeArray[i2].prev = heIndices[std::make_pair(v[0], v[1])];
+
+			//Storing vertex indices at starting points
+			mesh.HalfEdgeArray[i0].vIndex = v[2];
+			mesh.HalfEdgeArray[i1].vIndex = v[0];
+			mesh.HalfEdgeArray[i2].vIndex = v[1];
+
+			//Storing half edge indices in faces too
+			mesh.FacesArray[i].HalfEdgeArray[0] = heIndices[std::make_pair(v[0], v[1])];
+			mesh.FacesArray[i].HalfEdgeArray[1] = heIndices[std::make_pair(v[1], v[2])];
+			mesh.FacesArray[i].HalfEdgeArray[2] = heIndices[std::make_pair(v[2], v[0])];
+		}
 	}
 }
 
@@ -46,8 +153,8 @@ void initHalfEdges(Mesh& mesh, std::vector<std::pair<int, int>> heIndices) {
 */
 Mesh readMeshObj(std::string path) {
 	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
-	
-	std::vector<std::pair<int, int>> heIndices;
+
+	std::map<std::pair<int, int>, int> heIndices;
 
 	Mesh mesh = Mesh();
 
@@ -78,7 +185,7 @@ Mesh readMeshObj(std::string path) {
 		}
 		else if (line[0] == 'f') {
 			std::string vertex1, vertex2, vertex3;
-			int vertexIndex[3], uvIndex[3], normalIndex[3];
+			int vertexIndex[4], uvIndex[4], normalIndex[4];
 
 			if (content.size() < 4) {
 				throw std::invalid_argument("File can't be read by our simple parser : ( Try exporting with other options\n");
@@ -110,30 +217,69 @@ Mesh readMeshObj(std::string path) {
 			if (thirdPartNumbers.size() > 2)
 				normalIndex[2] = std::stoi(thirdPartNumbers[2]) - 1;
 
-			heIndices.push_back(std::make_pair(vertexIndex[0], vertexIndex[1]));
-			heIndices.push_back(std::make_pair(vertexIndex[1], vertexIndex[2]));
-			heIndices.push_back(std::make_pair(vertexIndex[2], vertexIndex[0]));
+			if (content.size() == 5) {
+				mesh.quadratic = true;
 
-			mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
-			mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[2], vertexIndex[0], heIndices);
-			mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[0], vertexIndex[1], heIndices);
-			mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[1], vertexIndex[2], heIndices);
+				std::string fourthPart = content[4];
+				std::vector<std::string> fourthPartNumbers = wordsInLine(fourthPart, '/');
 
-			vertexIndices.push_back(vertexIndex[0]);
-			vertexIndices.push_back(vertexIndex[1]);
-			vertexIndices.push_back(vertexIndex[2]);
-			uvIndices.push_back(uvIndex[0]);
-			uvIndices.push_back(uvIndex[1]);
-			uvIndices.push_back(uvIndex[2]);
-			normalIndices.push_back(normalIndex[0]);
-			normalIndices.push_back(normalIndex[1]);
-			normalIndices.push_back(normalIndex[2]);
+				vertexIndex[3] = std::stoi(fourthPartNumbers[0]) - 1;
+				if (fourthPartNumbers.size() > 1)
+					uvIndex[3] = std::stoi(fourthPartNumbers[1]) - 1;
+				if (fourthPartNumbers.size() > 2)
+					normalIndex[3] = std::stoi(fourthPartNumbers[2]) - 1;
+
+				//mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
+				//Add half-edge indices to edges PER FACE
+				//If added only to vertices, indices are overwritten by other face's data
+				MeshFace f = MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2], vertexIndex[3]);
+				mesh.FacesArray.push_back(f);
+
+				vertexIndices.push_back(vertexIndex[0]);
+				vertexIndices.push_back(vertexIndex[1]);
+				vertexIndices.push_back(vertexIndex[2]);
+				vertexIndices.push_back(vertexIndex[3]);
+				uvIndices.push_back(uvIndex[0]);
+				uvIndices.push_back(uvIndex[1]);
+				uvIndices.push_back(uvIndex[2]);
+				uvIndices.push_back(uvIndex[3]);
+				normalIndices.push_back(normalIndex[0]);
+				normalIndices.push_back(normalIndex[1]);
+				normalIndices.push_back(normalIndex[2]);
+				normalIndices.push_back(normalIndex[3]);
+			}
+			else {
+				heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])] = heIndices.size();
+				heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])] = heIndices.size();
+				heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])] = heIndices.size();
+
+				//mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
+				//Add half-edge indices to edges PER FACE
+				//If added only to vertices, indices are overwritten by other face's data
+				MeshFace f = MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]);
+				mesh.FacesArray.push_back(f);
+
+				//for loop scheme
+				mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])];
+				mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])];
+				mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])];
+
+				vertexIndices.push_back(vertexIndex[0]);
+				vertexIndices.push_back(vertexIndex[1]);
+				vertexIndices.push_back(vertexIndex[2]);
+				uvIndices.push_back(uvIndex[0]);
+				uvIndices.push_back(uvIndex[1]);
+				uvIndices.push_back(uvIndex[2]);
+				normalIndices.push_back(normalIndex[0]);
+				normalIndices.push_back(normalIndex[1]);
+				normalIndices.push_back(normalIndex[2]);
+			}
 		}
 	}
 
 	file.close();
 
-	initHalfEdges(mesh, heIndices);
+	initHalfEdges(mesh);
 
 	return mesh;
 }
@@ -141,7 +287,7 @@ Mesh readMeshObj(std::string path) {
 Mesh readMeshStl(std::string path) {
 	Mesh mesh = Mesh();
 
-	std::vector<std::pair<int, int>> heIndices;
+	std::map<std::pair<int, int>, int> heIndices;
 
 	std::ifstream file;
 	file.open(path);
@@ -195,21 +341,22 @@ Mesh readMeshStl(std::string path) {
 					}
 				}
 
-				if(!found){
+				if (!found) {
 					//vertices.insert(vertex);
 					mesh.VerticesArray.push_back(vertex);
 					verticesRead++;
 				}
 			}
 
-			heIndices.push_back(std::make_pair(vertexIndex[0], vertexIndex[1]));
-			heIndices.push_back(std::make_pair(vertexIndex[1], vertexIndex[2]));
-			heIndices.push_back(std::make_pair(vertexIndex[2], vertexIndex[0]));
+			heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])] = heIndices.size();
+			heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])] = heIndices.size();
+			heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])] = heIndices.size();
 
 			mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
-			mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[2], vertexIndex[0], heIndices);
-			mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[0], vertexIndex[1], heIndices);
-			mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[1], vertexIndex[2], heIndices);
+			//for loop scheme
+			mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])];
+			mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])];
+			mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])];
 
 			std::getline(file, line); // endloop
 
@@ -219,87 +366,89 @@ Mesh readMeshStl(std::string path) {
 	}
 
 	file.close();
-
-
-	initHalfEdges(mesh, heIndices);
+	initHalfEdges(mesh);
 
 	return mesh;
-}
+	}
 
-Mesh readMeshPly(std::string path) {
-	Mesh mesh = Mesh();
-	EasyAsPLY::PlyReader reader;
-	std::vector<std::pair<int, int>> heIndices;
+	Mesh readMeshPly(std::string path) {
+		Mesh mesh = Mesh();
+		EasyAsPLY::PlyReader reader;
+		std::map<std::pair<int, int>, int> heIndices;
 
-	reader.Open();
+		reader.Open();
 
-	if (reader.Read(path)){
-		// Get all the vertices
-		int vertexIndex = reader.GetFormat()->GetElementIndex("vertex");
-		std::vector<EasyAsPLY::PlyElement*>* vertices = reader.GetData()->GetElements(vertexIndex);
+		if (reader.Read(path)) {
+			// Get all the vertices
+			int vertexIndex = reader.GetFormat()->GetElementIndex("vertex");
+			std::vector<EasyAsPLY::PlyElement*>* vertices = reader.GetData()->GetElements(vertexIndex);
 
-		int xIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("x");
-		int yIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("y");
-		int zIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("z");
+			int xIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("x");
+			int yIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("y");
+			int zIndex = reader.GetFormat()->GetElement("vertex")->GetPropertyIndex("z");
 
-		for (int i = 0, n = vertices->size(); i < n; i++) {
-			EasyAsPLY::PlyElement* vertex = vertices->at(i);
+			for (int i = 0, n = vertices->size(); i < n; i++) {
+				EasyAsPLY::PlyElement* vertex = vertices->at(i);
 
-			mesh.VerticesArray.push_back(MeshVertex(vertex->GetProperty(xIndex)->GetValue<float>(), vertex->GetProperty(yIndex)->GetValue<float>(), vertex->GetProperty(zIndex)->GetValue<float>()));
+				mesh.VerticesArray.push_back(MeshVertex(vertex->GetProperty(xIndex)->GetValue<double>(), vertex->GetProperty(yIndex)->GetValue<double>(), vertex->GetProperty(zIndex)->GetValue<double>()));
+			}
+
+			int faceIndex = reader.GetFormat()->GetElementIndex("face");
+			std::vector<EasyAsPLY::PlyElement*>* faces = reader.GetData()->GetElements(faceIndex);
+
+			int idx = reader.GetFormat()->GetElement("face")->GetPropertyIndex("vertex_indices");
+
+			for (int i = 0, n = faces->size(); i < n; i++) {
+				EasyAsPLY::PlyElement* face = faces->at(i);
+				std::string face_content = faces->at(i)->GetProperty(idx)->GetValue<std::string>();
+
+				std::vector<std::string> content = wordsInLine(face_content);
+
+				int vertexIndex[3] = { std::stoi(content[0]), std::stoi(content[1]), std::stoi(content[2]) };
+
+				mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
+
+				heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])] = heIndices.size();
+				heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])] = heIndices.size();
+				heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])] = heIndices.size();
+
+				//for loop scheme
+				mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[2], vertexIndex[0])];
+				mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[0], vertexIndex[1])];
+				mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = heIndices[std::make_pair(vertexIndex[1], vertexIndex[2])];
+			}
+
+		}
+		else {
+			throw std::invalid_argument("Impossible to open the file!");
 		}
 
-		int faceIndex = reader.GetFormat()->GetElementIndex("face");
-		std::vector<EasyAsPLY::PlyElement*>* faces = reader.GetData()->GetElements(faceIndex);
+		reader.Close();
 
-		int idx = reader.GetFormat()->GetElement("face")->GetPropertyIndex("vertex_indices");
+		initHalfEdges(mesh);
 
-		for (int i = 0, n = faces->size(); i < n; i++) {
-			EasyAsPLY::PlyElement* face = faces->at(i);
-			std::string face_content = faces->at(i)->GetProperty(idx)->GetValue<std::string>();
-			
-			std::vector<std::string> content = wordsInLine(face_content);
+		return mesh;
+	}
 
-			int vertexIndex[3] = { std::stoi(content[0]), std::stoi(content[1]), std::stoi(content[2])};
-
-			mesh.FacesArray.push_back(MeshFace(vertexIndex[0], vertexIndex[1], vertexIndex[2]));
-
-			heIndices.push_back(std::make_pair(vertexIndex[0], vertexIndex[1]));
-			heIndices.push_back(std::make_pair(vertexIndex[1], vertexIndex[2]));
-			heIndices.push_back(std::make_pair(vertexIndex[2], vertexIndex[0]));
-
-			mesh.VerticesArray[vertexIndex[0]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[2], vertexIndex[0], heIndices);
-			mesh.VerticesArray[vertexIndex[1]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[0], vertexIndex[1], heIndices);
-			mesh.VerticesArray[vertexIndex[2]].halfEdgeIndex = getHalfEdgeIndex(vertexIndex[1], vertexIndex[2], heIndices);
+	Mesh readMesh(std::string path, MeshType type) {
+		switch (type)
+		{
+		case OBJ:
+			return readMeshObj(path);
+			break;
+		case PLY:
+			return readMeshPly(path);
+			break;
+		case STL:
+			return readMeshStl(path);
+			break;
+		default:
+			throw std::invalid_argument("Unknown type");
 		}
-
-	}
-	else {
-		throw std::invalid_argument("Impossible to open the file!");
 	}
 
-	reader.Close();
 
-	initHalfEdges(mesh, heIndices);
 
-	return mesh;
-}
-
-Mesh readMesh(std::string path, MeshType type) {
-	switch (type)
-	{
-	case OBJ:
-		return readMeshObj(path);
-		break;
-	case PLY:
-		return readMeshPly(path);
-		break;
-	case STL:
-		return readMeshStl(path);
-		break;
-	default:
-		throw std::invalid_argument("Unknown type");
-	}
-}
 
 void saveMeshObj(std::string path, Mesh mesh) {
 	std::ofstream outFile;
