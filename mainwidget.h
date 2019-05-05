@@ -18,8 +18,19 @@ public:
     explicit MainWidget(QWidget *parent = 0); //Constructor
     ~MainWidget(); // Destructor
 
+private slots:
+    void applyLoop();
+    void applyButterfly();
+    void applySquareroot();
+    void applyCatmull();
+    void reset();
+
 private:
-   QPushButton* button_;
+   QPushButton* button_loop;
+   QPushButton* button_butterfly;
+   QPushButton* button_squareroot;
+   QPushButton* button_catmull;
+   QPushButton* button_reset;
    graph_engine* ge;
    OGLWidget* oglWidget_;
 

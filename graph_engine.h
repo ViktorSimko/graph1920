@@ -16,8 +16,12 @@ class graph_engine {
 public:
 
     void initObject();
-    void applySchema();
+    void applyLoopSchema();
+    void applyButterflySchema();
+    void applySquarerootSchema();
+    void applyCatmullSchema();
     void drawMesh();
+    void reset();
 
     void mouseClick(int button, int button_state, int x, int y);
     void mouseMotion(int x, int y);
@@ -25,6 +29,7 @@ public:
 private:
 
     Mesh mesh_object;
+    Mesh original_mesh;
 
 };
 

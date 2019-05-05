@@ -2,9 +2,33 @@
 
 void graph_engine::initObject() {
     mesh_object = readMesh("test.obj", MeshType::OBJ);
+    original_mesh = mesh_object;
 }
 
-void graph_engine::applySchema() {
+void graph_engine::reset() {
+    mesh_object = original_mesh;
+    glutPostRedisplay();
+}
+
+void graph_engine::applyLoopSchema() {
+    LoopSchema schema;
+    mesh_object = schema.apply(mesh_object);
+    glutPostRedisplay();
+}
+
+void graph_engine::applyButterflySchema() {
+    LoopSchema schema;
+    mesh_object = schema.apply(mesh_object);
+    glutPostRedisplay();
+}
+
+void graph_engine::applySquarerootSchema() {
+    LoopSchema schema;
+    mesh_object = schema.apply(mesh_object);
+    glutPostRedisplay();
+}
+
+void graph_engine::applyCatmullSchema() {
     LoopSchema schema;
     mesh_object = schema.apply(mesh_object);
     glutPostRedisplay();
