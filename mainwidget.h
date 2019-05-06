@@ -19,6 +19,8 @@ public:
     ~MainWidget(); // Destructor
 
 private slots:
+    void load();
+    void save();
     void applyLoop();
     void applyButterfly();
     void applySquareroot();
@@ -26,13 +28,15 @@ private slots:
     void reset();
 
 private:
-   QPushButton* button_loop;
-   QPushButton* button_butterfly;
-   QPushButton* button_squareroot;
-   QPushButton* button_catmull;
-   QPushButton* button_reset;
-   graph_engine* ge;
-   OGLWidget* oglWidget_;
+    QPushButton* button_loop;
+    QPushButton* button_butterfly;
+    QPushButton* button_squareroot;
+    QPushButton* button_catmull;
+    QPushButton* button_reset;
+    QPushButton* button_load;
+    QPushButton* button_save;
+    graph_engine* ge;
+    OGLWidget* oglWidget_;
 
 };
 

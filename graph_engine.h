@@ -18,7 +18,8 @@ class graph_engine {
 
 public:
 
-    void initObject();
+    void initObject(std::string path);
+    void saveObject(std::string path);
     void applyLoopSchema();
     void applyButterflySchema();
     void applySquarerootSchema();

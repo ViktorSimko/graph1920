@@ -1,10 +1,13 @@
 #include <QtWidgets/QtWidgets>
 #include "mainwidget.h"
 
+
 // Constructor for main widget
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent)
 {
+   button_load = new QPushButton(tr("Load"));
+   button_save = new QPushButton(tr("Save"));
    button_loop = new QPushButton(tr("Loop"));
    button_butterfly = new QPushButton(tr("Butterfly"));
    button_squareroot = new QPushButton(tr("Square root 3"));
@@ -15,18 +18,22 @@ MainWidget::MainWidget(QWidget *parent) :
    oglWidget_ = new OGLWidget();
    ge = new graph_engine();
    oglWidget_->setGraphEngine(ge);
-   ge->initObject();
+   ge->initObject("test.obj");
 
 
    QGridLayout *mainLayout = new QGridLayout;
 
-   mainLayout->addWidget(button_loop, 0, 0);
-   mainLayout->addWidget(button_butterfly, 0, 1);
-   mainLayout->addWidget(button_squareroot, 0, 2);
-   mainLayout->addWidget(button_catmull, 0, 3);
-   mainLayout->addWidget(oglWidget_, 1, 0, 1, 4);
-   mainLayout->addWidget(button_reset, 2, 1, 1, 2);
+   mainLayout->addWidget(button_load, 0, 0, 1, 2);
+   mainLayout->addWidget(button_save, 0, 2, 1, 2);
+   mainLayout->addWidget(button_loop, 1, 0);
+   mainLayout->addWidget(button_butterfly, 1, 1);
+   mainLayout->addWidget(button_squareroot, 1, 2);
+   mainLayout->addWidget(button_catmull, 1, 3);
+   mainLayout->addWidget(oglWidget_, 2, 0, 1, 4);
+   mainLayout->addWidget(button_reset, 3, 1, 1, 2);
 
+   connect(button_load, SIGNAL (released()), this, SLOT (load()));
+   connect(button_save, SIGNAL (released()), this, SLOT (save()));
    connect(button_loop, SIGNAL (released()), this, SLOT (applyLoop()));
    connect(button_butterfly, SIGNAL (released()), this, SLOT (applyButterfly()));
    connect(button_squareroot, SIGNAL (released()), this, SLOT (applySquareroot()));
@@ -35,6 +42,17 @@ MainWidget::MainWidget(QWidget *parent) :
 
    setLayout(mainLayout);
    setWindowTitle(tr("Graph2019"));
+}
+
+void MainWidget::load() {
+   QString file = QFileDialog::getOpenFileName(this, tr("Open"), QDir::currentPath(), tr("Object files (*.obj *.ply *.stl)"), nullptr, QFileDialog::Option::DontUseNativeDialog);
+   this->ge->initObject(file.toUtf8().constData());
+   oglWidget_->repaint();
+}
+
+void MainWidget::save() {
+   QString file = QFileDialog::getSaveFileName(this, tr("Open"), QDir::currentPath(), tr("Object files (*.obj *.ply *.stl)"), nullptr, QFileDialog::Option::DontUseNativeDialog);
+   this->ge->saveObject(file.toUtf8().constData());
 }
 
 void MainWidget::applyLoop() {

@@ -1,8 +1,28 @@
 #include <graph_engine.h>
 
-void graph_engine::initObject() {
-    mesh_object = readMesh("test.obj", MeshType::OBJ);
+void graph_engine::initObject(std::string path) {
+    std::string extension = path.substr(path.rfind("."), path.length());
+    auto type = MeshType::OBJ;
+    if (extension == ".ply") {
+        type = MeshType::PLY;
+    }
+    if (extension == ".stl") {
+        type = MeshType::STL;
+    }
+    mesh_object = readMesh(path, type);
     original_mesh = mesh_object;
+}
+
+void graph_engine::saveObject(std::string path) {
+    std::string extension = path.substr(path.rfind("."), path.length());
+    auto type = MeshType::OBJ;
+    if (extension == ".ply") {
+        type = MeshType::PLY;
+    }
+    if (extension == ".stl") {
+        type = MeshType::STL;
+    }
+    saveMesh(path, mesh_object, type);
 }
 
 void graph_engine::reset() {
