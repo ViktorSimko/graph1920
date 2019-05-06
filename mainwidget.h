@@ -2,6 +2,7 @@
 #define MAINWIDGET_H
 
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QDoubleSpinBox>
 #include "oglwidget.h"
 #include "graph_engine.h"
 
@@ -29,6 +30,10 @@ private slots:
 
 private:
     QPushButton* button_loop;
+    QDoubleSpinBox* box_a;
+    QDoubleSpinBox* box_b;
+    QDoubleSpinBox* box_c;
+    QDoubleSpinBox* box_d;
     QPushButton* button_butterfly;
     QPushButton* button_squareroot;
     QPushButton* button_catmull;

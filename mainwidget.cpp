@@ -6,6 +6,14 @@
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent)
 {
+   box_a = new QDoubleSpinBox();
+   box_a->setValue(3/8.);
+   box_b = new QDoubleSpinBox();
+   box_b->setValue(3/8.);
+   box_c = new QDoubleSpinBox();
+   box_c->setValue(1/8.);
+   box_d = new QDoubleSpinBox();
+   box_d->setValue(1/8.);
    button_load = new QPushButton(tr("Load"));
    button_save = new QPushButton(tr("Save"));
    button_loop = new QPushButton(tr("Loop"));
@@ -29,8 +37,12 @@ MainWidget::MainWidget(QWidget *parent) :
    mainLayout->addWidget(button_butterfly, 1, 1);
    mainLayout->addWidget(button_squareroot, 1, 2);
    mainLayout->addWidget(button_catmull, 1, 3);
-   mainLayout->addWidget(oglWidget_, 2, 0, 1, 4);
-   mainLayout->addWidget(button_reset, 3, 1, 1, 2);
+   mainLayout->addWidget(box_a, 2, 0);
+   mainLayout->addWidget(box_b, 2, 1);
+   mainLayout->addWidget(box_c, 2, 2);
+   mainLayout->addWidget(box_d, 2, 3);
+   mainLayout->addWidget(oglWidget_, 3, 0, 1, 4);
+   mainLayout->addWidget(button_reset, 4, 1, 1, 2);
 
    connect(button_load, SIGNAL (released()), this, SLOT (load()));
    connect(button_save, SIGNAL (released()), this, SLOT (save()));
@@ -57,13 +69,13 @@ void MainWidget::save() {
 
 void MainWidget::applyLoop() {
    std::cout << "applying loop schema" << std::endl;
-   ge->applyLoopSchema();
+   ge->applyLoopSchema(box_a->value(), box_b->value(), box_c->value(), box_d->value());
    oglWidget_->repaint();
 }
 
 void MainWidget::applyButterfly() {
    std::cout << "applying butterfly schema" << std::endl;
-   ge->applyButterflySchema();
+   ge->applyButterflySchema(box_a->value(), box_b->value(), box_c->value());
    oglWidget_->repaint();
 }
 

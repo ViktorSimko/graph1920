@@ -20,8 +20,8 @@ public:
 
     void initObject(std::string path);
     void saveObject(std::string path);
-    void applyLoopSchema();
-    void applyButterflySchema();
+    void applyLoopSchema(float a, float b, float c, float d);
+    void applyButterflySchema(float a, float b, float c);
     void applySquarerootSchema();
     void applyCatmullSchema();
     void drawMesh();

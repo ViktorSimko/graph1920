@@ -29,13 +29,13 @@ void graph_engine::reset() {
     mesh_object = original_mesh;
 }
 
-void graph_engine::applyLoopSchema() {
-    LoopSchema schema;
+void graph_engine::applyLoopSchema(float a, float b, float c, float d) {
+    LoopSchema schema(a, b, c, d);
     mesh_object = schema.apply(mesh_object);
 }
 
-void graph_engine::applyButterflySchema() {
-    ButterflySchema schema;
+void graph_engine::applyButterflySchema(float a, float b, float c) {
+    ButterflySchema schema(a, b, c);
     mesh_object = schema.apply(mesh_object);
 }
 
