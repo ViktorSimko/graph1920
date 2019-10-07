@@ -20,6 +20,6 @@ BoundaryBox::BoundaryBox(float minX, float minY, float minZ, float maxX, float m
     this->cogY = cogY;
     this->cogZ = cogZ;
 
-    this->diagonalLength = abs(minX - maxX) + abs(minY - maxY) + abs(minZ - maxZ);
+    this->diagonalLength = sqrt(pow(minX - maxX, 2) + pow(minY - maxY, 2) + pow(minZ - maxZ, 2));
 
 }

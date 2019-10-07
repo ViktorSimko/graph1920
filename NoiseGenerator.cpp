@@ -7,6 +7,7 @@
 #include <vector>
 #include "math.h"
 #include <QtWidgets/QtWidgets>
+#include <random>
 
 
 NoiseGenerator::NoiseGenerator(Mesh mesh, BoundaryBox* boundaryBox) {
@@ -16,7 +17,7 @@ NoiseGenerator::NoiseGenerator(Mesh mesh, BoundaryBox* boundaryBox) {
 
 Mesh NoiseGenerator::generateNoise(int noise, int point) {
     srand(time(NULL));
-    float diagonalLength = this->boundaryBox->diagonalLength;
+    float diagonalLength = this->boundaryBox->diagonalLength * 0.2;
 
     float noisePercentage = (float) noise / 100;
     float pointPercentage = (float) point / 100;
@@ -39,20 +40,26 @@ Mesh NoiseGenerator::generateNoise(int noise, int point) {
     }
 
     for (auto ind : indices) {
-        if (noiseLevel < 1) {
+        if (noiseLevel == 0) {
             return newMesh;
         }
-        float xNoise = rand() % 5 * noiseLevel;
-        float yNoise = rand() % 5 * noiseLevel;
-        float zNoise = rand() % 5 * noiseLevel;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(0, 1);
+
+        float xNoise = dis(gen) * noiseLevel;
+        float yNoise = dis(gen) * noiseLevel;
+        float zNoise = dis(gen) * noiseLevel;
+
+
 
         int xPrefix = rand() % 2 + 1;
         int yPrefix = rand() % 2 + 1;
         int zPrefix = rand() % 2 + 1;
 
-        newMesh.VerticesArray[ind].x *= pow(-1, xPrefix) * xNoise;
-        newMesh.VerticesArray[ind].y *= pow(-1, yPrefix) * yNoise;
-        newMesh.VerticesArray[ind].z *= pow(-1, zPrefix) * zNoise;
+        newMesh.VerticesArray[ind].x += pow(-1, xPrefix) * xNoise;
+        newMesh.VerticesArray[ind].y += pow(-1, yPrefix) * yNoise;
+        newMesh.VerticesArray[ind].z += pow(-1, zPrefix) * zNoise;
     }
 
 
