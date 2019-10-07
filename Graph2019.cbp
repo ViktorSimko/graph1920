@@ -98,6 +98,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/BoundaryBox.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/BoundaryBox.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/NoiseGenerator.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/NoiseGenerator.h">
+			<Option target="Graph2019"/>
+		</Unit>
 		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/graph_engine.cpp">
 			<Option target="Graph2019"/>
 		</Unit>

@@ -1,5 +1,7 @@
 #include <QtWidgets/QtWidgets>
 #include <graph_engine.h>
+#include "NoiseGenerator.h"
+#include "BoundaryBox.h"
 
 void graph_engine::initObject(std::string path) {
     std::string extension = path.substr(path.rfind("."), path.length());
@@ -40,7 +42,6 @@ void graph_engine::calculateBoundary() {
         {
             int vertexIdx = face.v[i];
             MeshVertex v = mesh_object.VerticesArray[vertexIdx];
-            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
             if(i <= 0) {
                 minX = v.x;
                 maxX = v.x;
@@ -80,7 +81,6 @@ void graph_engine::calculateBoundary() {
 void graph_engine::initNoiseGenerator() {
     noise_original = mesh_object;
     noise_noisy = mesh_object;
-
 }
 
 void graph_engine::applyLoopSchema(float a, float b, float c, float d) {
@@ -205,9 +205,29 @@ void graph_engine::drawNoiseNoisy() {
         }
         glEnd();
     }
+
+}
+
+void graph_engine::applyNoise() {
+    this->mesh_object = noise_noisy;
+}
+
+int graph_engine::getMeshPoints() {
+    return this->mesh_object.VerticesArray.size();
 }
 
 void graph_engine::generateNoise(int noise, int points) {
-    qDebug() << "Generating noise" << " " << noise << " " << points;
-
+    BoundaryBox* bb = new BoundaryBox(
+            this->minX,
+            this->minY,
+            this->minZ,
+            this->maxX,
+            this->maxY,
+            this->maxZ,
+            this->cogX,
+            this->cogY,
+            this->cogZ
+            );
+    NoiseGenerator* noiseGenerator = new NoiseGenerator(this->noise_original, bb);
+    noise_noisy = noiseGenerator->generateNoise(noise, points);
 }

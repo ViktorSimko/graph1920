@@ -32,6 +32,9 @@ public:
     void generateNoise(int noise, int points);
 
     void initNoiseGenerator();
+    void applyNoise();
+
+    int getMeshPoints();
 
     void mouseClick(int button, int button_state, int x, int y);
     void mouseMotion(int x, int y);

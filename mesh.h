@@ -99,7 +99,7 @@ public:
 
 class MeshHalfEdge {
 public:
-	int pairHalfEdgeIndex; // A pár half-edge indexe vagy -1 ha szélsõ
+	int pairHalfEdgeIndex; // A pï¿½r half-edge indexe vagy -1 ha szï¿½lsï¿½
 	int faceIndex;
 	int vIndex; //The index of vertex at the starting of the edge
 	int next;
@@ -169,6 +169,8 @@ public:
 		//VerticesArray.reserve();
 		//FacesArray.reserve();
 	}
+
+	~Mesh() {}
 
 	void addNoise() {
 		srand(time(NULL));

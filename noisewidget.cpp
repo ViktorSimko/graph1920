@@ -4,6 +4,8 @@
 #include "noisegloriginal.h"
 #include "noiseglnoisy.h"
 
+#include "math.h"
+
 
 // Constructor for main widget
 NoiseWidget::NoiseWidget(QWidget *parent, graph_engine* ge) :
@@ -15,19 +17,19 @@ NoiseWidget::NoiseWidget(QWidget *parent, graph_engine* ge) :
 
    slider_noise = new QSlider(Qt::Horizontal, this);
    slider_points = new QSlider(Qt::Horizontal, this);
+   graphEngine = ge;
 
    label_noise = new QLabel(this);
    label_noise->setText("Noise: " + QString::number(noise) + "%");
    label_points = new QLabel(this);
-   label_points->setText("points: " + QString::number(points) + "%");
+   label_points->setText("points: " + QString::number(points) + "% " + "(" + QString::number(points / 100.0 * graphEngine->getMeshPoints()) + ")");
 
-    graphEngine = ge;
 
    noiseGlOriginal = new NoiseGLOriginal(this);
    noiseGlNoisy = new NoiseGLNoisy(this);
 
-    noiseGlOriginal->setGraphEngine(graphEngine);
-    noiseGlNoisy->setGraphEngine(graphEngine);
+   noiseGlOriginal->setGraphEngine(graphEngine);
+   noiseGlNoisy->setGraphEngine(graphEngine);
 
    QGridLayout *mainLayout = new QGridLayout;
 
@@ -50,6 +52,7 @@ NoiseWidget::NoiseWidget(QWidget *parent, graph_engine* ge) :
 
    connect(button_reset, SIGNAL (released()), this, SLOT (reset()));
    connect(button_close, SIGNAL (released()), this, SLOT (close()));
+   connect(button_apply, SIGNAL (released()), this, SLOT (apply()));
 
    connect(slider_noise, &QSlider::valueChanged, this, &NoiseWidget::noiseChanged);
    connect(slider_points, &QSlider::valueChanged, this, &NoiseWidget::pointsChanged);
@@ -62,7 +65,9 @@ NoiseWidget::NoiseWidget(QWidget *parent, graph_engine* ge) :
 
 void NoiseWidget::reset() {
     graphEngine->initNoiseGenerator();
-   noiseGlOriginal->repaint();
+    slider_noise->setValue(0);
+    slider_points->setValue(0);
+    noiseGlOriginal->repaint();
     noiseGlNoisy->repaint();
 }
 
@@ -74,7 +79,8 @@ void NoiseWidget::noiseChanged(int value) {
 
 void NoiseWidget::pointsChanged(int value) {
     this->points = value;
-    label_points->setText("points: " + QString::number(value) + "%");
+    qDebug() << QString::number(value / 100.0);
+    label_points->setText("points: " + QString::number(value) + "% " + "(" + QString::number(round(value / 100.0 * graphEngine->getMeshPoints())) + ")");
     changedValue();
 }
 
@@ -84,6 +90,9 @@ void NoiseWidget::changedValue() {
 }
 
 
-void NoiseWidget::apply() {}
+void NoiseWidget::apply() {
+    graphEngine->applyNoise();
+    close();
+}
 
 NoiseWidget::~NoiseWidget() {}
