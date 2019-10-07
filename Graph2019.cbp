@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Graph2019"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="clang"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\usr\local\opt\;CMake Files\..\..\..\..\..\usr\local\opt\qt\;CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\;CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\;CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Widgets\;CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\;CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Core\;CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5OpenGL\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/lajoskvcs/dev/github.com/graph1920"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/lajoskvcs/dev/github.com/graph1920"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/lajoskvcs/dev/github.com/graph1920"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Graph2019">
+				<Option output="/Users/lajoskvcs/dev/github.com/graph1920/Graph2019" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lajoskvcs/dev/github.com/graph1920"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add option="-DQT_OPENGL_LIB"/>
+					<Add directory="/Users/lajoskvcs/dev/github.com/graph1920"/>
+					<Add directory="/usr/local/opt/qt/lib/QtWidgets.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtWidgets.framework/Headers"/>
+					<Add directory="/usr/local/opt/qt/lib/QtGui.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtGui.framework/Headers"/>
+					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers"/>
+					<Add directory="/usr/local/opt/qt/lib/QtCore.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtCore.framework/Headers"/>
+					<Add directory="/usr/local/opt/qt/./mkspecs/macx-clang"/>
+					<Add directory="/usr/local/opt/qt/lib/QtOpenGL.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtOpenGL.framework/Headers"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 Graph2019"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Graph2019/fast">
+				<Option output="/Users/lajoskvcs/dev/github.com/graph1920/Graph2019" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/lajoskvcs/dev/github.com/graph1920"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_GUI_LIB"/>
+					<Add option="-DQT_CORE_LIB"/>
+					<Add option="-DQT_OPENGL_LIB"/>
+					<Add directory="/Users/lajoskvcs/dev/github.com/graph1920"/>
+					<Add directory="/usr/local/opt/qt/lib/QtWidgets.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtWidgets.framework/Headers"/>
+					<Add directory="/usr/local/opt/qt/lib/QtGui.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtGui.framework/Headers"/>
+					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers"/>
+					<Add directory="/usr/local/opt/qt/lib/QtCore.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtCore.framework/Headers"/>
+					<Add directory="/usr/local/opt/qt/./mkspecs/macx-clang"/>
+					<Add directory="/usr/local/opt/qt/lib/QtOpenGL.framework"/>
+					<Add directory="/usr/local/opt/qt/lib/QtOpenGL.framework/Headers"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 Graph2019/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/lajoskvcs/dev/github.com/graph1920/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/graph_engine.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/graph_engine.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/main.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/mainwidget.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/mainwidget.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_mainwidget.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_mainwidget.cpp.rule">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_noiseglnoisy.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_noiseglnoisy.cpp.rule">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_noisegloriginal.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_noisegloriginal.cpp.rule">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_noisewidget.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_noisewidget.cpp.rule">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/noiseglnoisy.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/noiseglnoisy.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/noisegloriginal.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/noisegloriginal.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/noisewidget.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/noisewidget.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/oglwidget.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/oglwidget.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyData.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyData.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyElement.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyElement.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyFormat.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyProperty.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyProperty.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyReader.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyReader.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyWriter.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/third_party_libs/easy_as_ply/PlyWriter.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Widgets/Qt5Widgets_QMacStylePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5GuiConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QCocoaIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QMacHeifPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QMacJp2Plugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Core/Qt5CoreConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Core/Qt5CoreConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5Core/Qt5CoreMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5OpenGL/Qt5OpenGLConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5OpenGL\"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/../../../../../usr/local/opt/qt/lib/cmake/Qt5OpenGL/Qt5OpenGLConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\local\opt\qt\lib\cmake\Qt5OpenGL\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

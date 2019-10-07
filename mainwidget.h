@@ -5,9 +5,11 @@
 #include <QtWidgets/QDoubleSpinBox>
 #include "oglwidget.h"
 #include "graph_engine.h"
+#include "noisewidget.h"
 
 class QPushButton;
 class OGLWidget;
+class NoiseWidget;
 
 // This is the declaration of our MainWidget class
 // The definition/implementation is in mainwidget.cpp
@@ -27,21 +29,28 @@ private slots:
     void applySquareroot();
     void applyCatmull();
     void reset();
+    void showNoiseGenerator();
 
 private:
-    QPushButton* button_loop;
     QDoubleSpinBox* box_a;
     QDoubleSpinBox* box_b;
     QDoubleSpinBox* box_c;
     QDoubleSpinBox* box_d;
+
+    QPushButton* button_loop;
     QPushButton* button_butterfly;
     QPushButton* button_squareroot;
     QPushButton* button_catmull;
     QPushButton* button_reset;
     QPushButton* button_load;
     QPushButton* button_save;
+    QPushButton* button_noise;
+
     graph_engine* ge;
+
     OGLWidget* oglWidget_;
+
+    NoiseWidget* noiseWidget;
 
 };
 

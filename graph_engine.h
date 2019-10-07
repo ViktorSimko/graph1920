@@ -27,6 +27,8 @@ public:
     void drawMesh();
     void reset();
 
+    void initNoiseGenerator();
+
     void mouseClick(int button, int button_state, int x, int y);
     void mouseMotion(int x, int y);
 
@@ -34,6 +36,10 @@ private:
 
     Mesh mesh_object;
     Mesh original_mesh;
+
+
+    Mesh noise_original;
+    Mesh noise_noisy;
 
 };
 

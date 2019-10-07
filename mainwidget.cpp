@@ -1,5 +1,6 @@
 #include <QtWidgets/QtWidgets>
 #include "mainwidget.h"
+#include "noisewidget.h"
 
 
 // Constructor for main widget
@@ -21,12 +22,19 @@ MainWidget::MainWidget(QWidget *parent) :
    button_squareroot = new QPushButton(tr("Square root 3"));
    button_catmull = new QPushButton(tr("Catmull-Clark"));
 
+   button_noise = new QPushButton(tr("Generate Noise"));
+
+
    button_reset = new QPushButton("Reset");
 
    oglWidget_ = new OGLWidget();
    ge = new graph_engine();
    oglWidget_->setGraphEngine(ge);
    ge->initObject("test.obj");
+
+//   noiseWidget = new NoiseWidget;
+//   noiseWidget->setModal(true);
+//   noiseWidget->setGraphEngine(ge);
 
 
    QGridLayout *mainLayout = new QGridLayout;
@@ -41,8 +49,11 @@ MainWidget::MainWidget(QWidget *parent) :
    mainLayout->addWidget(box_b, 2, 1);
    mainLayout->addWidget(box_c, 2, 2);
    mainLayout->addWidget(box_d, 2, 3);
-   mainLayout->addWidget(oglWidget_, 3, 0, 1, 4);
-   mainLayout->addWidget(button_reset, 4, 1, 1, 2);
+
+   mainLayout->addWidget(button_noise, 3, 1, 1, 2);
+
+   mainLayout->addWidget(oglWidget_, 4, 0, 1, 4);
+   mainLayout->addWidget(button_reset, 5, 1, 1, 2);
 
    connect(button_load, SIGNAL (released()), this, SLOT (load()));
    connect(button_save, SIGNAL (released()), this, SLOT (save()));
@@ -51,6 +62,8 @@ MainWidget::MainWidget(QWidget *parent) :
    connect(button_squareroot, SIGNAL (released()), this, SLOT (applySquareroot()));
    connect(button_catmull, SIGNAL (released()), this, SLOT (applyCatmull()));
    connect(button_reset, SIGNAL (released()), this, SLOT (reset()));
+
+   connect(button_noise, SIGNAL (released()), this, SLOT (showNoiseGenerator()));
 
    setLayout(mainLayout);
    setWindowTitle(tr("Graph2019"));
@@ -94,6 +107,13 @@ void MainWidget::applyCatmull() {
 void MainWidget::reset() {
    ge->reset();
    oglWidget_->repaint();
+}
+
+void MainWidget::showNoiseGenerator() {
+    noiseWidget = new NoiseWidget(this, ge);
+    ge->initNoiseGenerator();
+    noiseWidget->setModal(true);
+    noiseWidget->exec();
 }
 
 // Destructor

@@ -11,6 +11,7 @@ void graph_engine::initObject(std::string path) {
     }
     mesh_object = readMesh(path, type);
     original_mesh = mesh_object;
+//    bounding_box = getBoundingBox(mesh_object)
 }
 
 void graph_engine::saveObject(std::string path) {
@@ -27,26 +28,36 @@ void graph_engine::saveObject(std::string path) {
 
 void graph_engine::reset() {
     mesh_object = original_mesh;
+//    bounding_box = getBoundingBox(mesh_object)
+}
+
+void graph_engine::initNoiseGenerator() {
+    noise_original = mesh_object;
+    noise_noisy = mesh_object;
 }
 
 void graph_engine::applyLoopSchema(float a, float b, float c, float d) {
     LoopSchema schema(a, b, c, d);
     mesh_object = schema.apply(mesh_object);
+//    bounding_box = getBoundingBox(mesh_object)
 }
 
 void graph_engine::applyButterflySchema(float a, float b, float c) {
     ButterflySchema schema(a, b, c);
     mesh_object = schema.apply(mesh_object);
+//    bounding_box = getBoundingBox(mesh_object)
 }
 
 void graph_engine::applySquarerootSchema() {
     SquareRoot3 schema;
     mesh_object = schema.apply(mesh_object);
+//    bounding_box = getBoundingBox(mesh_object)
 }
 
 void graph_engine::applyCatmullSchema() {
     CatmullClark schema;
     mesh_object = schema.apply(mesh_object);
+//    bounding_box = getBoundingBox(mesh_object)
 }
 
 void graph_engine::drawMesh() {
