@@ -1,3 +1,4 @@
+#include <QtWidgets/QtWidgets>
 #include <graph_engine.h>
 
 void graph_engine::initObject(std::string path) {
@@ -11,7 +12,7 @@ void graph_engine::initObject(std::string path) {
     }
     mesh_object = readMesh(path, type);
     original_mesh = mesh_object;
-//    bounding_box = getBoundingBox(mesh_object)
+    calculateBoundary();
 }
 
 void graph_engine::saveObject(std::string path) {
@@ -28,36 +29,82 @@ void graph_engine::saveObject(std::string path) {
 
 void graph_engine::reset() {
     mesh_object = original_mesh;
-//    bounding_box = getBoundingBox(mesh_object)
+    calculateBoundary();
+}
+
+void graph_engine::calculateBoundary() {
+    int end = mesh_object.quadratic ? 4 : 3;
+    for (auto face : mesh_object.FacesArray)
+    {
+        for (int i = 0; i < end; i++)
+        {
+            int vertexIdx = face.v[i];
+            MeshVertex v = mesh_object.VerticesArray[vertexIdx];
+            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+            if(i <= 0) {
+                minX = v.x;
+                maxX = v.x;
+
+                minY = v.y;
+                maxY = v.y;
+
+                minZ = v.z;
+                maxZ = v.z;
+            }
+            if(minX > v.x) {
+                minX = v.x;
+            }
+            if(maxX < v.x) {
+                maxX = v.x;
+            }
+            if(minY > v.y) {
+                minY = v.y;
+            }
+            if(maxY < v.y) {
+                maxY = v.y;
+            }
+            if(minZ > v.z) {
+                minZ = v.z;
+            }
+            if(maxZ < v.z) {
+                maxZ = v.z;
+            }
+
+        }
+    }
+    cogX = (minX + maxX) / 2;
+    cogY = (minY + maxY) / 2;
+    cogZ = (floorf(minZ * 100) / 100 + floorf(maxZ * 100) / 100) / 2;
 }
 
 void graph_engine::initNoiseGenerator() {
     noise_original = mesh_object;
     noise_noisy = mesh_object;
+
 }
 
 void graph_engine::applyLoopSchema(float a, float b, float c, float d) {
     LoopSchema schema(a, b, c, d);
     mesh_object = schema.apply(mesh_object);
-//    bounding_box = getBoundingBox(mesh_object)
+    calculateBoundary();
 }
 
 void graph_engine::applyButterflySchema(float a, float b, float c) {
     ButterflySchema schema(a, b, c);
     mesh_object = schema.apply(mesh_object);
-//    bounding_box = getBoundingBox(mesh_object)
+    calculateBoundary();
 }
 
 void graph_engine::applySquarerootSchema() {
     SquareRoot3 schema;
     mesh_object = schema.apply(mesh_object);
-//    bounding_box = getBoundingBox(mesh_object)
+    calculateBoundary();
 }
 
 void graph_engine::applyCatmullSchema() {
     CatmullClark schema;
     mesh_object = schema.apply(mesh_object);
-//    bounding_box = getBoundingBox(mesh_object)
+    calculateBoundary();
 }
 
 void graph_engine::drawMesh() {
@@ -93,4 +140,74 @@ void graph_engine::drawMesh() {
         }
         glEnd();
     }
+}
+
+
+void graph_engine::drawNoiseOriginal() {
+
+    Color color = noise_original.faceColor;
+    int end = noise_original.quadratic ? 4 : 3;
+    for (auto face : noise_original.FacesArray)
+    {
+        glBegin(GL_POLYGON);
+        for (int i = 0; i < end; i++)
+        {
+            int vertexIdx = face.v[i];
+            MeshVertex v = noise_original.VerticesArray[vertexIdx];
+            glColor3f(1.0, 0.0, 0.0);
+            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+        }
+        glEnd();
+    }
+
+    for (auto face : noise_original.FacesArray)
+    {
+        glBegin(GL_LINE_LOOP);
+        for (int i = 0; i < end; i++)
+        {
+            int vertexIdx = face.v[i];
+            MeshVertex v = noise_original.VerticesArray[vertexIdx];
+            glLineWidth(15.0);
+            glColor3f(0.0, 0.0, 0.0);
+            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+        }
+        glEnd();
+    }
+}
+
+void graph_engine::drawNoiseNoisy() {
+
+    Color color = noise_noisy.faceColor;
+    int end = noise_noisy.quadratic ? 4 : 3;
+    for (auto face : noise_noisy.FacesArray)
+    {
+        glBegin(GL_POLYGON);
+        for (int i = 0; i < end; i++)
+        {
+            int vertexIdx = face.v[i];
+            MeshVertex v = noise_noisy.VerticesArray[vertexIdx];
+            glColor3f(1.0, 0.0, 0.0);
+            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+        }
+        glEnd();
+    }
+
+    for (auto face : noise_noisy.FacesArray)
+    {
+        glBegin(GL_LINE_LOOP);
+        for (int i = 0; i < end; i++)
+        {
+            int vertexIdx = face.v[i];
+            MeshVertex v = noise_noisy.VerticesArray[vertexIdx];
+            glLineWidth(15.0);
+            glColor3f(0.0, 0.0, 0.0);
+            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+        }
+        glEnd();
+    }
+}
+
+void graph_engine::generateNoise(int noise, int points) {
+    qDebug() << "Generating noise" << " " << noise << " " << points;
+
 }

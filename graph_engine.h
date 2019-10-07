@@ -26,6 +26,10 @@ public:
     void applyCatmullSchema();
     void drawMesh();
     void reset();
+    void drawNoiseOriginal();
+    void drawNoiseNoisy();
+
+    void generateNoise(int noise, int points);
 
     void initNoiseGenerator();
 
@@ -40,6 +44,10 @@ private:
 
     Mesh noise_original;
     Mesh noise_noisy;
+
+    float minX, minY, minZ, maxX, maxY, maxZ, cogX, cogY, cogZ;
+
+    void calculateBoundary();
 
 };
 

@@ -64,7 +64,7 @@ void NoiseGLNoisy::paintGL()
     glRotatef(rotationY, 0.0, 1.0, 0.0);
     glRotatef(rotationX, 1.0, 0.0, 0.0);
 
-    this->ge->drawMesh();
+    this->ge->drawNoiseNoisy();
 }
 
 void NoiseGLNoisy::resizeGL(int w, int h)
