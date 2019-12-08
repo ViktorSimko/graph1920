@@ -57,10 +57,29 @@ NoiseWidget::NoiseWidget(QWidget *parent, graph_engine* ge) :
    connect(slider_noise, &QSlider::valueChanged, this, &NoiseWidget::noiseChanged);
    connect(slider_points, &QSlider::valueChanged, this, &NoiseWidget::pointsChanged);
 
+    QRect rec = QApplication::desktop()->screenGeometry();
+    int height = rec.height();
+    int width = rec.width();
+
+    qDebug() << height;
+    qDebug() << width;
+
+   int widgetHeight = height / 2;
+   int widgetWidth = width / 2;
+    qDebug() << widgetHeight;
+    qDebug() << widgetWidth;
+
+   if (widgetHeight > 768) {
+       widgetHeight = 768;
+   }
+   if (widgetWidth > 1024) {
+       widgetWidth = 1024;
+   }
+
    setLayout(mainLayout);
    setWindowTitle(tr("Noise"));
-   setFixedHeight(768);
-   setFixedWidth(1024);
+   setFixedHeight(widgetHeight);
+   setFixedWidth(widgetWidth);
 }
 
 void NoiseWidget::reset() {
