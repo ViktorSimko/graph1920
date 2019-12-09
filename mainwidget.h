@@ -43,10 +43,6 @@ private slots:
     void enableAllSchemes(bool isEnabled);
 
 private:
-    QDoubleSpinBox* box_a;
-    QDoubleSpinBox* box_b;
-    QDoubleSpinBox* box_c;
-    QDoubleSpinBox* box_d;
 
     QPushButton* button_loop;
     QPushButton* button_butterfly;

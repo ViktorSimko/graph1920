@@ -8,14 +8,6 @@
 MainWidget::MainWidget(QWidget *parent) :
     QWidget(parent)
 {
-   box_a = new QDoubleSpinBox();
-   box_a->setValue(3/8.);
-   box_b = new QDoubleSpinBox();
-   box_b->setValue(3/8.);
-   box_c = new QDoubleSpinBox();
-   box_c->setValue(1/8.);
-   box_d = new QDoubleSpinBox();
-   box_d->setValue(1/8.);
    button_load = new QPushButton(tr("Load"));
    button_save = new QPushButton(tr("Save"));
    button_loop = new QPushButton(tr("Loop"));
@@ -60,11 +52,6 @@ MainWidget::MainWidget(QWidget *parent) :
    mainLayout->addWidget(list_custom_schemes, 2, 0);
    mainLayout->addWidget(button_custom, 2, 1);
    mainLayout->addWidget(button_custom_apply, 2, 2);
-
-   mainLayout->addWidget(box_a, 3, 0);
-   mainLayout->addWidget(box_b, 3, 1);
-   mainLayout->addWidget(box_c, 3, 2);
-   mainLayout->addWidget(box_d, 3, 3);
 
    mainLayout->addWidget(button_noise, 4, 1, 1, 2);
 
