@@ -22,10 +22,11 @@ MainWidget::MainWidget(QWidget *parent) :
    button_butterfly = new QPushButton(tr("Butterfly"));
    button_squareroot = new QPushButton(tr("Square root 3"));
    button_catmull = new QPushButton(tr("Catmull-Clark"));
+   button_doosabin = new QPushButton(tr("Doo-Sabin"));
 
    list_custom_schemes = new QListWidget();
    initCustomSchemaList();
-   button_custom = new QPushButton(tr("Modify custom..."));
+   button_custom = new QPushButton(tr("Modify custom"));
    button_custom_apply = new QPushButton(tr("Apply custom"));
    button_noise = new QPushButton(tr("Generate Noise"));
 
@@ -44,21 +45,31 @@ MainWidget::MainWidget(QWidget *parent) :
 
    QGridLayout *mainLayout = new QGridLayout;
 
-   mainLayout->addWidget(button_load, 0, 0, 1, 2);
-   mainLayout->addWidget(button_save, 0, 2, 1, 2);
+   mainLayout->addWidget(button_load, 0, 0, 1, 3);
+   mainLayout->addWidget(button_save, 0, 3, 1, 3);
+
+   mainLayout->addWidget(button_catmull, 1, 3);
+   mainLayout->addWidget(button_doosabin, 1, 4);
+
    mainLayout->addWidget(button_loop, 1, 0);
    mainLayout->addWidget(button_butterfly, 1, 1);
    mainLayout->addWidget(button_squareroot, 1, 2);
-   mainLayout->addWidget(button_catmull, 1, 3);
-   mainLayout->addWidget(box_a, 2, 0);
-   mainLayout->addWidget(box_b, 2, 1);
-   mainLayout->addWidget(box_c, 2, 2);
-   mainLayout->addWidget(box_d, 2, 3);
 
-   mainLayout->addWidget(button_noise, 3, 1, 1, 2);
+   enableAllSchemes(false);
 
-   mainLayout->addWidget(oglWidget_, 4, 0, 1, 4);
-   mainLayout->addWidget(button_reset, 5, 1, 1, 2);
+   mainLayout->addWidget(list_custom_schemes, 2, 0);
+   mainLayout->addWidget(button_custom, 2, 1);
+   mainLayout->addWidget(button_custom_apply, 2, 2);
+
+   mainLayout->addWidget(box_a, 3, 0);
+   mainLayout->addWidget(box_b, 3, 1);
+   mainLayout->addWidget(box_c, 3, 2);
+   mainLayout->addWidget(box_d, 3, 3);
+
+   mainLayout->addWidget(button_noise, 4, 1, 1, 2);
+
+   mainLayout->addWidget(oglWidget_, 5, 0, 1, 4);
+   mainLayout->addWidget(button_reset, 6, 1, 1, 2);
 
    connect(button_load, SIGNAL (released()), this, SLOT (load()));
    connect(button_save, SIGNAL (released()), this, SLOT (save()));
@@ -66,6 +77,7 @@ MainWidget::MainWidget(QWidget *parent) :
    connect(button_butterfly, SIGNAL (released()), this, SLOT (applyButterfly()));
    connect(button_squareroot, SIGNAL (released()), this, SLOT (applySquareroot()));
    connect(button_catmull, SIGNAL (released()), this, SLOT (applyCatmull()));
+   connect(button_doosabin, SIGNAL (released()), this, SLOT (applyDooSabin()));
    connect(button_reset, SIGNAL (released()), this, SLOT (reset()));
 
    connect(button_noise, SIGNAL (released()), this, SLOT (showNoiseGenerator()));
@@ -77,8 +89,10 @@ MainWidget::MainWidget(QWidget *parent) :
 }
 
 void MainWidget::load() {
+   enableAllSchemes(true);
    QString file = QFileDialog::getOpenFileName(this, tr("Open"), QDir::currentPath(), tr("Object files (*.obj *.ply *.stl)"), nullptr, QFileDialog::Option::DontUseNativeDialog);
    this->ge->initObject(file.toUtf8().constData());
+   enableAllSchemes(false);
    oglWidget_->repaint();
 }
 
@@ -108,7 +122,13 @@ void MainWidget::applySquareroot(float a, float b, float c) {
 void MainWidget::applyCatmull(float a, float b, float c, float d) {
    std::cout << "applying catmull clark schema" << std::endl;
    ge->applyCatmullSchema(a, b, c, d);
-   oglWidget_->repaint(a, b, c, d);
+   oglWidget_->repaint();
+}
+
+void MainWidget::applyDooSabin() {
+    std::cout << "applying Doo Sabin schema" << std::endl;
+    ge->applyDooSabinSchema();
+    oglWidget_->repaint();
 }
 
 void MainWidget::reset() {
@@ -121,6 +141,17 @@ void MainWidget::showNoiseGenerator() {
     ge->initNoiseGenerator();
     noiseWidget->setModal(true);
     noiseWidget->exec();
+}
+
+void MainWidget::enableAllSchemes(bool isEnabled) {
+    if(!ge->isMeshObjectQuadratic()) {
+        button_catmull->setEnabled(isEnabled);
+        button_doosabin->setEnabled(isEnabled);
+    } else {
+        button_loop->setEnabled(isEnabled);
+        button_butterfly->setEnabled(isEnabled);
+        button_squareroot->setEnabled(isEnabled);
+    }
 }
 
 void MainWidget::showCustomSchemaModifier() {

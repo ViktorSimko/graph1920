@@ -34,11 +34,13 @@ private slots:
     float c = 1.0/16.0);
     void applySquareroot(float a = 0.333, float b = 0.333, float c = 0.333);
     void applyCatmull(float a = 0.25, float b = 0.25, float c = 0.25, float d = 0.25);
+    void applyDooSabin();
     void reset();
     void showNoiseGenerator();
     void showCustomSchemaModifier();
     void initCustomSchemaList();
     void applyCustom();
+    void enableAllSchemes(bool isEnabled);
 
 private:
     QDoubleSpinBox* box_a;
@@ -50,6 +52,7 @@ private:
     QPushButton* button_butterfly;
     QPushButton* button_squareroot;
     QPushButton* button_catmull;
+    QPushButton* button_doosabin;
     QPushButton* button_reset;
     QPushButton* button_load;
     QPushButton* button_save;

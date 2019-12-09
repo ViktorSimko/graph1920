@@ -95,7 +95,7 @@ void graph_engine::applyButterflySchema(float a, float b, float c) {
     calculateBoundary();
 }
 
-void graph_engine::applySquarerootSchema() {
+void graph_engine::applySquarerootSchema(float a, float b, float c) {
     SquareRoot3 schema(a, b, c);
     mesh_object = schema.apply(mesh_object);
     calculateBoundary();
@@ -103,6 +103,12 @@ void graph_engine::applySquarerootSchema() {
 
 void graph_engine::applyCatmullSchema(float a, float b, float c, float d) {
     CatmullClark schema(a, b, c, d);
+    mesh_object = schema.apply(mesh_object);
+    calculateBoundary();
+}
+
+void graph_engine::applyDooSabinSchema() {
+    DooSabin schema;
     mesh_object = schema.apply(mesh_object);
     calculateBoundary();
 }
@@ -214,6 +220,10 @@ void graph_engine::applyNoise() {
 
 int graph_engine::getMeshPoints() {
     return this->mesh_object.VerticesArray.size();
+}
+
+bool graph_engine::isMeshObjectQuadratic() {
+    return this->mesh_object.quadratic;
 }
 
 void graph_engine::generateNoise(int noise, int points) {

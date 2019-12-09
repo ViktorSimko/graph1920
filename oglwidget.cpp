@@ -4,7 +4,7 @@
 OGLWidget::OGLWidget(QWidget *parent)
     : QOpenGLWidget(parent)
 {
-
+    this->setFocusPolicy ( Qt::StrongFocus );
 }
 
 OGLWidget::~OGLWidget()
@@ -35,6 +35,18 @@ void OGLWidget::wheelEvent(QWheelEvent *event) {
         zoom = 0;
     }
     qDebug() << zoom;
+    this->repaint();
+}
+
+void OGLWidget::keyPressEvent(QKeyEvent* event) {
+    if(event->key() == Qt::Key_Down) {
+        translateZ += 0.1;
+    }
+
+    if(event->key() == Qt::Key_Up) {
+        translateZ -= 0.1;
+    }
+
     this->repaint();
 }
 

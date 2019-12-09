@@ -7,6 +7,7 @@
 #include "catmull_clark_schema.h"
 #include "butterfly_schema.h"
 #include "squareroot3_schema.h"
+#include "doo_sabin_schema.h"
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -24,6 +25,7 @@ public:
     void applyButterflySchema(float a, float b, float c);
     void applySquarerootSchema(float a, float b, float c);
     void applyCatmullSchema(float a, float b, float c, float d);
+    void applyDooSabinSchema();
     void drawMesh();
     void reset();
     void drawNoiseOriginal();
@@ -35,6 +37,7 @@ public:
     void applyNoise();
 
     int getMeshPoints();
+    bool isMeshObjectQuadratic();
 
     void mouseClick(int button, int button_state, int x, int y);
     void mouseMotion(int x, int y);
