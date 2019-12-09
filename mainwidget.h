@@ -3,9 +3,13 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QListWidget>
 #include "oglwidget.h"
 #include "graph_engine.h"
 #include "noisewidget.h"
+#include "customschemawidget.h"
+#include "json.hpp"
+#include "jsonio.h"
 
 class QPushButton;
 class OGLWidget;
@@ -24,12 +28,17 @@ public:
 private slots:
     void load();
     void save();
-    void applyLoop();
-    void applyButterfly();
-    void applySquareroot();
-    void applyCatmull();
+    void applyLoop(float a = 3.0/8.0, float b = 3.0/8.0,
+    float c = 1.0/8.0, float d = 1.0/8.0);
+    void applyButterfly(float a = 1.0/2.0, float b = 1.0/8.0,
+    float c = 1.0/16.0);
+    void applySquareroot(float a = 0.333, float b = 0.333, float c = 0.333);
+    void applyCatmull(float a = 0.25, float b = 0.25, float c = 0.25, float d = 0.25);
     void reset();
     void showNoiseGenerator();
+    void showCustomSchemaModifier();
+    void initCustomSchemaList();
+    void applyCustom();
 
 private:
     QDoubleSpinBox* box_a;
@@ -45,13 +54,21 @@ private:
     QPushButton* button_load;
     QPushButton* button_save;
     QPushButton* button_noise;
+    QPushButton* button_custom_apply;
+    QPushButton* button_custom;
+
+    QListWidget* list_custom_schemes;
 
     graph_engine* ge;
 
     OGLWidget* oglWidget_;
 
     NoiseWidget* noiseWidget;
+    std::string selected_custom_scheme_name;
+    std::string selected_custom_scheme_key;
 
+    json custom_schemes;
+    CustomSchemaWidget* customSchemaWidget;
 };
 
 #endif // MAINWIDGET_H

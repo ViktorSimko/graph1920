@@ -4,6 +4,8 @@
 
 class CatmullClark : public Schema {
 private:
+	float _a, _b, _c, _d;
+
 	Mesh mesh;
 	Mesh newMesh;
 
@@ -52,7 +54,7 @@ private:
 			auto face1 = getFacePoint(faceIndex);
 			auto face2 = getFacePoint(mesh.HalfEdgeArray[edgePair].faceIndex);
 
-			MeshVertex edgePoint = (face1 + face2 + edge1 + edge2) * 0.25;
+			MeshVertex edgePoint = (face1 * _a + face2 * _b + edge1 * _c + edge2 * _d);
 
 			newMesh.VerticesArray.push_back(edgePoint);
 			EM[halfEdgeIndex] = newMesh.VerticesArray.size() - 1;
@@ -66,7 +68,7 @@ private:
 		auto v2 = mesh.VerticesArray[mesh.FacesArray[faceIndex].v[2]];
 		auto v3 = mesh.VerticesArray[mesh.FacesArray[faceIndex].v[3]];
 
-		return (v0 + v1 + v2 + v3) * 0.25;
+		return (v0 * _a + v1 * _b + v2 * _c + v3 * _d);
 	}
 
 	void computeNewVertexPoints() {
@@ -116,6 +118,20 @@ private:
 	}
 
 public:
+	CatmullClark() {
+		this->_a = 0.25;
+		this->_b = 0.25;
+		this->_c = 0.25;
+		this->_d = 0.25;
+	}
+
+	CatmullClark(float a, float b, float c, float d) {
+		this->_a = a;
+		this->_b = b;
+		this->_c = c;
+		this->_d = d;
+	}
+	
 	Mesh apply(Mesh _mesh) {
 		mesh = _mesh;
 		newMesh = Mesh();

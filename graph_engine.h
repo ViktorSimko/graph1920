@@ -22,8 +22,8 @@ public:
     void saveObject(std::string path);
     void applyLoopSchema(float a, float b, float c, float d);
     void applyButterflySchema(float a, float b, float c);
-    void applySquarerootSchema();
-    void applyCatmullSchema();
+    void applySquarerootSchema(float a, float b, float c);
+    void applyCatmullSchema(float a, float b, float c, float d);
     void drawMesh();
     void reset();
     void drawNoiseOriginal();

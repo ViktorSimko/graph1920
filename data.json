@@ -1,0 +1,38 @@
+{
+    "builtinSchemes": {
+        "Butterfly": {
+            "type": "interpolation",
+            "weights": {
+                "A": 0.5,
+                "B": 0.125,
+                "C": 0.0625
+            }
+        },
+        "CatmullClark": {
+            "type": "interpolation",
+            "weights": {
+                "A": 0.0,
+                "B": 0.5,
+                "C": 0.25,
+                "D": 0.25
+            }
+        },
+        "Loop": {
+            "type": "approximation",
+            "weights": {
+                "A": 0.25,
+                "B": 0.25,
+                "C": 0.25,
+                "D": 0.25
+            }
+        },
+        "SquareRoot3": {
+            "type": "interpolation",
+            "weights": {
+                "A": 0.333,
+                "B": 0.333,
+                "C": 0.333
+            }
+        }
+    }
+}

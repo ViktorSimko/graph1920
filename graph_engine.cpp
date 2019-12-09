@@ -96,13 +96,13 @@ void graph_engine::applyButterflySchema(float a, float b, float c) {
 }
 
 void graph_engine::applySquarerootSchema() {
-    SquareRoot3 schema;
+    SquareRoot3 schema(a, b, c);
     mesh_object = schema.apply(mesh_object);
     calculateBoundary();
 }
 
-void graph_engine::applyCatmullSchema() {
-    CatmullClark schema;
+void graph_engine::applyCatmullSchema(float a, float b, float c, float d) {
+    CatmullClark schema(a, b, c, d);
     mesh_object = schema.apply(mesh_object);
     calculateBoundary();
 }

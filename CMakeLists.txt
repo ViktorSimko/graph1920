@@ -4,7 +4,7 @@ project (Graph2019)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -26,6 +26,7 @@ list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/noiseglnoisy.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/noisegloriginal.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/NoiseGenerator.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/BoundaryBox.cpp)
+list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/customschemawidget.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyData.cpp)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyData.h)
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply/PlyElement.cpp)
@@ -40,10 +41,12 @@ list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/third_party_libs/easy_as_ply
 
 qt5_wrap_cpp(Graph2019_mainwidget_moc ${PROJECT_SOURCE_DIR}/mainwidget.h)
 qt5_wrap_cpp(Graph2019_noisewidget_moc ${PROJECT_SOURCE_DIR}/noisewidget.h)
+qt5_wrap_cpp(Graph2019_customschemawidget_moc ${PROJECT_SOURCE_DIR}/customschemawidget.h)
 qt5_wrap_cpp(Graph2019_noisegloriginal_moc ${PROJECT_SOURCE_DIR}/noisegloriginal.h)
 qt5_wrap_cpp(Graph2019_noiseglnoisy_moc ${PROJECT_SOURCE_DIR}/noiseglnoisy.h)
 list (APPEND Graph2019Bin_src ${Graph2019_mainwidget_moc})
 list (APPEND Graph2019Bin_src ${Graph2019_noisewidget_moc})
+list (APPEND Graph2019Bin_src ${Graph2019_customschemawidget_moc})
 list (APPEND Graph2019Bin_src ${Graph2019_noisegloriginal_moc})
 list (APPEND Graph2019Bin_src ${Graph2019_noiseglnoisy_moc})
 list (APPEND Graph2019Bin_src ${PROJECT_SOURCE_DIR}/oglwidget.h)

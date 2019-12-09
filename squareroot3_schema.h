@@ -5,6 +5,8 @@
 
 class SquareRoot3 : public Schema {
 private:
+	float _a, _b, _c;
+
 	std::vector<MeshFace> newFaces;
 	std::vector<MeshVertex> relaxedVertices;
 
@@ -16,7 +18,7 @@ private:
 			auto p2 = mesh.VerticesArray[face.v[1]];
 			auto p3 = mesh.VerticesArray[face.v[2]];
 
-			auto midpoint = (p1 + p2 + p3) / 3.0;
+			auto midpoint = (p1 * _a + p2 * _b + p3 * _c);
 			mesh.VerticesArray.push_back(midpoint);
 
 			for (int i = 0; i < 3; ++i) {
@@ -160,6 +162,18 @@ private:
 	}
 
 public:
+	SquareRoot3() {
+		this->_a = 0.333;
+		this->_b = 0.333;
+		this->_c = 0.333;
+	}
+
+	SquareRoot3(float a, float b, float c) {
+		this->_a = a;
+		this->_b = b;
+		this->_c = c;
+	}
+	
 	Mesh apply(Mesh mesh) {
 		auto va_size = mesh.VerticesArray.size();
 		relaxedVertices.resize(va_size);

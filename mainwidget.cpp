@@ -1,7 +1,8 @@
 #include <QtWidgets/QtWidgets>
 #include "mainwidget.h"
 #include "noisewidget.h"
-
+#include "json.hpp"
+#include "jsonio.h"
 
 // Constructor for main widget
 MainWidget::MainWidget(QWidget *parent) :
@@ -22,6 +23,10 @@ MainWidget::MainWidget(QWidget *parent) :
    button_squareroot = new QPushButton(tr("Square root 3"));
    button_catmull = new QPushButton(tr("Catmull-Clark"));
 
+   list_custom_schemes = new QListWidget();
+   initCustomSchemaList();
+   button_custom = new QPushButton(tr("Modify custom..."));
+   button_custom_apply = new QPushButton(tr("Apply custom"));
    button_noise = new QPushButton(tr("Generate Noise"));
 
 
@@ -64,6 +69,8 @@ MainWidget::MainWidget(QWidget *parent) :
    connect(button_reset, SIGNAL (released()), this, SLOT (reset()));
 
    connect(button_noise, SIGNAL (released()), this, SLOT (showNoiseGenerator()));
+   connect(button_custom, SIGNAL (released()), this, SLOT (showCustomSchemaModifier()));
+   connect(button_custom_apply, SIGNAL (released()), this, SLOT (applyCustom()));
 
    setLayout(mainLayout);
    setWindowTitle(tr("Graph2019"));
@@ -80,28 +87,28 @@ void MainWidget::save() {
    this->ge->saveObject(file.toUtf8().constData());
 }
 
-void MainWidget::applyLoop() {
+void MainWidget::applyLoop(float a, float b, float c, float d) {
    std::cout << "applying loop schema" << std::endl;
-   ge->applyLoopSchema(box_a->value(), box_b->value(), box_c->value(), box_d->value());
+   ge->applyLoopSchema(a, b, c, d);
    oglWidget_->repaint();
 }
 
-void MainWidget::applyButterfly() {
+void MainWidget::applyButterfly(float a, float b, float c) {
    std::cout << "applying butterfly schema" << std::endl;
-   ge->applyButterflySchema(box_a->value(), box_b->value(), box_c->value());
+   ge->applyButterflySchema(a, b, c);
    oglWidget_->repaint();
 }
 
-void MainWidget::applySquareroot() {
+void MainWidget::applySquareroot(float a, float b, float c) {
    std::cout << "applying squareroot 3 schema" << std::endl;
-   ge->applySquarerootSchema();
+   ge->applySquarerootSchema(a, b, c);
    oglWidget_->repaint();
 }
 
-void MainWidget::applyCatmull() {
+void MainWidget::applyCatmull(float a, float b, float c, float d) {
    std::cout << "applying catmull clark schema" << std::endl;
-   ge->applyCatmullSchema();
-   oglWidget_->repaint();
+   ge->applyCatmullSchema(a, b, c, d);
+   oglWidget_->repaint(a, b, c, d);
 }
 
 void MainWidget::reset() {
@@ -114,6 +121,85 @@ void MainWidget::showNoiseGenerator() {
     ge->initNoiseGenerator();
     noiseWidget->setModal(true);
     noiseWidget->exec();
+}
+
+void MainWidget::showCustomSchemaModifier() {
+  int row = list_custom_schemes->currentRow();
+  int i = 0;
+  for (const auto& item : custom_schemes.items())
+  {
+        for (const auto& val : item.value().items())
+        {
+            if (i == row) {
+              selected_custom_scheme_name = val.key();
+              selected_custom_scheme_key = item.key();
+            }
+            ++i;
+        }
+  }
+    customSchemaWidget = new CustomSchemaWidget(this, custom_schemes, selected_custom_scheme_key, selected_custom_scheme_name);
+    customSchemaWidget->setModal(true);
+    customSchemaWidget->exec();
+    custom_schemes = JsonHandler::ReadJson("data.json");
+}
+
+void MainWidget::applyCustom() {
+   int row = list_custom_schemes->currentRow();
+   int i = 0;
+   json selected_custom_json;
+    for (const auto& item : custom_schemes.items())
+   {
+        for (const auto& val : item.value().items())
+        {
+            if (i == row) {
+              selected_custom_scheme_key = item.key();
+              selected_custom_scheme_name = val.key();
+              selected_custom_json = custom_schemes[selected_custom_scheme_key][selected_custom_scheme_name];
+              selected_custom_json["name"] = selected_custom_scheme_name;
+            }
+            ++i;
+        }
+   }
+
+   std::transform(selected_custom_scheme_name.begin(), selected_custom_scheme_name.end(), selected_custom_scheme_name.begin(),
+    [](unsigned char c){ return std::tolower(c); });
+   float a, b, c, d, e, f;
+   a = selected_custom_json["weights"]["A"];
+   b = selected_custom_json["weights"]["B"];
+
+   if (!selected_custom_scheme_name.find("butterfly")) {
+   c = selected_custom_json["weights"]["C"];
+        applyButterfly(a, b, c);
+   } else if (!selected_custom_scheme_name.find("loop")) {
+     c = selected_custom_json["weights"]["C"];
+     d = selected_custom_json["weights"]["D"];
+    applyLoop(a, b, c, d);
+   } else if (!selected_custom_scheme_name.find("catmullclark")) {
+     c = selected_custom_json["weights"]["C"];
+     d = selected_custom_json["weights"]["D"];
+     applyCatmull(a, b, c, d);
+   } else if (!selected_custom_scheme_name.find("squareroot3")) {
+     c = selected_custom_json["weights"]["C"];
+     applySquareroot(a, b, c);
+   }
+
+}
+
+void MainWidget::initCustomSchemaList() {
+    list_custom_schemes->clear();
+   custom_schemes = JsonHandler::ReadJson("data.json");
+   for (const auto& item : custom_schemes.items())
+   {
+        for (const auto& val : item.value().items())
+        {
+            QListWidgetItem* item = new QListWidgetItem();
+            QString qs = QString(val.key().c_str());
+            item->setText(qs);
+            list_custom_schemes->addItem(item);
+        }
+   }
+   list_custom_schemes->setCurrentRow(0);
+   list_custom_schemes->setFixedHeight(60);
 }
 
 // Destructor
