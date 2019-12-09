@@ -25,16 +25,26 @@ void NoiseGLNoisy::mouseMoveEvent(QMouseEvent* event) {
     last_x = event->x();
     last_y = event->y();
 
-    emit dimensionChanged(rotationX, rotationY, last_x, last_y);
+    emit dimensionChanged(rotationX, rotationY, last_x, last_y, zoom);
 
     this->repaint();
 }
 
-void NoiseGLNoisy::setDimensions(int rotationX, int rotationY, float last_x, float last_y) {
+void NoiseGLNoisy::wheelEvent(QWheelEvent *event) {
+    zoom += (event->delta() > 0) ? 0.05 : -0.05;
+    if (zoom < 0) {
+        zoom = 0;
+    }
+    emit dimensionChanged(rotationX, rotationY, last_x, last_y, zoom);
+    this->repaint();
+}
+
+void NoiseGLNoisy::setDimensions(int rotationX, int rotationY, float last_x, float last_y, double zoom) {
     this->rotationX = rotationX;
     this->rotationY = rotationY;
     this->last_x = last_x;
     this->last_y = last_y;
+    this->zoom = zoom;
     this->repaint();
 }
 
@@ -63,6 +73,8 @@ void NoiseGLNoisy::paintGL()
 
     glRotatef(rotationY, 0.0, 1.0, 0.0);
     glRotatef(rotationX, 1.0, 0.0, 0.0);
+
+    glScalef(zoom, zoom, zoom);
 
     this->ge->drawNoiseNoisy();
 }

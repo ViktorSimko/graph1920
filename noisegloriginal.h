@@ -22,10 +22,10 @@ public:
     void setGraphEngine(graph_engine* ge);
 
 public slots:
-    void setDimensions(int rotationX, int rotationY, float last_x, float last_y);
+    void setDimensions(int rotationX, int rotationY, float last_x, float last_y, double zoom);
 
 signals:
-    void dimensionChanged(int rotationX, int rotationY, float last_x, float last_y);
+    void dimensionChanged(int rotationX, int rotationY, float last_x, float last_y, double zoom);
 
 protected:
     void initializeGL();
@@ -33,12 +33,14 @@ protected:
     void paintGL();
     void mousePressEvent(QMouseEvent * event);
     void mouseMoveEvent(QMouseEvent * event);
+    void wheelEvent(QWheelEvent *event);
 
 private:
     graph_engine* ge;
 
     int rotationX = 0, rotationY = 0;
     float last_x = 0.0, last_y = 0.0;
+    double zoom = 0.2;
 };
 
 #endif // NOISEGLORIGINAL_H

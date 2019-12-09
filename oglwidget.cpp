@@ -1,3 +1,4 @@
+#include <QtWidgets/QtWidgets>
 #include "oglwidget.h"
 
 OGLWidget::OGLWidget(QWidget *parent)
@@ -28,6 +29,16 @@ void OGLWidget::mouseMoveEvent(QMouseEvent* event) {
     this->repaint();
 }
 
+void OGLWidget::wheelEvent(QWheelEvent *event) {
+    zoom += (event->delta() > 0) ? 0.05 : -0.05;
+    if (zoom < 0) {
+        zoom = 0;
+    }
+    qDebug() << zoom;
+    this->repaint();
+}
+
+
 void OGLWidget::setGraphEngine(graph_engine* ge) {
     this->ge = ge;
 }
@@ -36,6 +47,7 @@ void OGLWidget::initializeGL()
 {
     glClearColor(1,1,1,1);
     glEnable(GL_DEPTH_TEST);
+    glPointSize(5.0f);
 }
 
 void OGLWidget::paintGL()
@@ -53,6 +65,8 @@ void OGLWidget::paintGL()
 
     glRotatef(rotationY, 0.0, 1.0, 0.0);
     glRotatef(rotationX, 1.0, 0.0, 0.0);
+
+    glScalef(zoom, zoom, zoom);
 
     this->ge->drawMesh();
 }
