@@ -53,7 +53,7 @@
 					<Add directory="/usr/local/opt/qt/lib/QtWidgets.framework/Headers"/>
 					<Add directory="/usr/local/opt/qt/lib/QtGui.framework"/>
 					<Add directory="/usr/local/opt/qt/lib/QtGui.framework/Headers"/>
-					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenGL.framework/Headers"/>
 					<Add directory="/usr/local/opt/qt/lib/QtCore.framework"/>
 					<Add directory="/usr/local/opt/qt/lib/QtCore.framework/Headers"/>
 					<Add directory="/usr/local/opt/qt/./mkspecs/macx-clang"/>
@@ -83,7 +83,7 @@
 					<Add directory="/usr/local/opt/qt/lib/QtWidgets.framework/Headers"/>
 					<Add directory="/usr/local/opt/qt/lib/QtGui.framework"/>
 					<Add directory="/usr/local/opt/qt/lib/QtGui.framework/Headers"/>
-					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenGL.framework/Headers"/>
 					<Add directory="/usr/local/opt/qt/lib/QtCore.framework"/>
 					<Add directory="/usr/local/opt/qt/lib/QtCore.framework/Headers"/>
 					<Add directory="/usr/local/opt/qt/./mkspecs/macx-clang"/>
@@ -110,6 +110,12 @@
 		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/NoiseGenerator.h">
 			<Option target="Graph2019"/>
 		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/customschemawidget.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/customschemawidget.h">
+			<Option target="Graph2019"/>
+		</Unit>
 		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/graph_engine.cpp">
 			<Option target="Graph2019"/>
 		</Unit>
@@ -123,6 +129,12 @@
 			<Option target="Graph2019"/>
 		</Unit>
 		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/mainwidget.h">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_customschemawidget.cpp">
+			<Option target="Graph2019"/>
+		</Unit>
+		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_customschemawidget.cpp.rule">
 			<Option target="Graph2019"/>
 		</Unit>
 		<Unit filename="/Users/lajoskvcs/dev/github.com/graph1920/moc_mainwidget.cpp">

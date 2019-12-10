@@ -7,30 +7,30 @@
 
 #include <iostream>
 #include <map>
-#include "graph_engine.h"
 
 #include "json.hpp"
 #include "jsonio.h"
 
-CustomSchemaWidget::CustomSchemaWidget(QWidget *parent, json& items, std::string appr, std::string name)
-    : QDialog(parent)
+CustomSchemaWidget::CustomSchemaWidget(json& items, QWidget *parent, std::string approx, std::string name) :
+    QDialog(parent)
 {
 
     this->scheme_name = name;
-    this->scheme_key = appr;
+    this->scheme_key = approx;
 
-    this->selected_item = items[appr][name];
+    this->selected_item = items[approx][name];
     this->custom_schemes = items;
 
+
     label_name = new QLabel(this);
-    label_name->setText("Scheme name:");
+    label_name->setText(QString("Scheme name: ") + QString(scheme_name.c_str()));
     label_name->move(16, 16);
 
-    line_name = new QLineEdit(scheme_name.c_str(), this);
-    line_name->setReadOnly(true);
-    line_name->setFixedWidth(256);
-    line_name->setFixedHeight(32);
-    line_name->move(16, 48);
+//    line_name = new QLineEdit(, this);
+//    line_name->setReadOnly(true);
+//    line_name->setFixedWidth(256);
+//    line_name->setFixedHeight(32);
+//    line_name->move(16, 48);
 
     this->ofsX = 120;
     this->ofsY = 220;
@@ -38,13 +38,13 @@ CustomSchemaWidget::CustomSchemaWidget(QWidget *parent, json& items, std::string
     weights = getWeightBoxes();
 
     save_button = new QPushButton("Save", this);
-    save_button->move(300, 16);
+    save_button->move(500, 350);
 
     label_save = new QLabel("", this);
     label_save->setFixedWidth(200);
     label_save->move(300, 48);
-     connect(save_button, SIGNAL (released()), this, SLOT (saveCustomScheme()));
 
+    connect(save_button, SIGNAL (released()), this, SLOT (saveCustomScheme()));
     setWindowTitle(tr("Custom schemas"));
     setFixedHeight(400);
     setFixedWidth(600);

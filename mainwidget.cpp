@@ -40,23 +40,23 @@ MainWidget::MainWidget(QWidget *parent) :
    mainLayout->addWidget(button_load, 0, 0, 1, 3);
    mainLayout->addWidget(button_save, 0, 3, 1, 3);
 
-   mainLayout->addWidget(button_catmull, 1, 3);
-   mainLayout->addWidget(button_doosabin, 1, 4);
 
    mainLayout->addWidget(button_loop, 1, 0);
    mainLayout->addWidget(button_butterfly, 1, 1);
    mainLayout->addWidget(button_squareroot, 1, 2);
+   mainLayout->addWidget(button_catmull, 1, 3);
+   mainLayout->addWidget(button_doosabin, 1, 4);
 
    enableAllSchemes(false);
 
-   mainLayout->addWidget(list_custom_schemes, 2, 0);
-   mainLayout->addWidget(button_custom, 2, 1);
-   mainLayout->addWidget(button_custom_apply, 2, 2);
+   mainLayout->addWidget(list_custom_schemes, 2, 0, 1, 0);
+   mainLayout->addWidget(button_custom, 3, 0, 1, 3);
+   mainLayout->addWidget(button_custom_apply, 3, 3, 1, 2);
 
-   mainLayout->addWidget(button_noise, 4, 1, 1, 2);
+   mainLayout->addWidget(button_noise, 4, 1, 1, 3);
 
-   mainLayout->addWidget(oglWidget_, 5, 0, 1, 4);
-   mainLayout->addWidget(button_reset, 6, 1, 1, 2);
+   mainLayout->addWidget(oglWidget_, 5, 0, 1, 5);
+   mainLayout->addWidget(button_reset, 6, 1, 1, 3);
 
    connect(button_load, SIGNAL (released()), this, SLOT (load()));
    connect(button_save, SIGNAL (released()), this, SLOT (save()));
@@ -155,7 +155,7 @@ void MainWidget::showCustomSchemaModifier() {
             ++i;
         }
   }
-    customSchemaWidget = new CustomSchemaWidget(this, custom_schemes, selected_custom_scheme_key, selected_custom_scheme_name);
+    customSchemaWidget = new CustomSchemaWidget(custom_schemes, this, selected_custom_scheme_key, selected_custom_scheme_name);
     customSchemaWidget->setModal(true);
     customSchemaWidget->exec();
     custom_schemes = JsonHandler::ReadJson("data.json");
