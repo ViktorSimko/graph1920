@@ -34,6 +34,8 @@ MainWidget::MainWidget(QWidget *parent) :
 //   noiseWidget->setModal(true);
 //   noiseWidget->setGraphEngine(ge);
 
+    auto settings = menuBar()->addMenu(tr("&Settings"));
+
 
    QGridLayout *mainLayout = new QGridLayout;
 

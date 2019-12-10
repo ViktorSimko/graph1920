@@ -35,47 +35,43 @@ void graph_engine::reset() {
 }
 
 void graph_engine::calculateBoundary() {
-    int end = mesh_object.quadratic ? 4 : 3;
-    for (auto face : mesh_object.FacesArray)
+    int i = 0;
+    for (MeshVertex v : mesh_object.VerticesArray)
     {
-        for (int i = 0; i < end; i++)
-        {
-            int vertexIdx = face.v[i];
-            MeshVertex v = mesh_object.VerticesArray[vertexIdx];
-            if(i <= 0) {
-                minX = v.x;
-                maxX = v.x;
+        if(i <= 0) {
+            this->minX = v.x;
+            this->maxX = v.x;
 
-                minY = v.y;
-                maxY = v.y;
+            this->minY = v.y;
+            this->maxY = v.y;
 
-                minZ = v.z;
-                maxZ = v.z;
-            }
-            if(minX > v.x) {
-                minX = v.x;
-            }
-            if(maxX < v.x) {
-                maxX = v.x;
-            }
-            if(minY > v.y) {
-                minY = v.y;
-            }
-            if(maxY < v.y) {
-                maxY = v.y;
-            }
-            if(minZ > v.z) {
-                minZ = v.z;
-            }
-            if(maxZ < v.z) {
-                maxZ = v.z;
-            }
-
+            this->minZ = v.z;
+            this->maxZ = v.z;
         }
+        if(this->minX > v.x) {
+            this->minX = v.x;
+        }
+        if(this->maxX < v.x) {
+            this->maxX = v.x;
+        }
+        if(this->minY > v.y) {
+            this->minY = v.y;
+        }
+        if(this->maxY < v.y) {
+            this->maxY = v.y;
+        }
+        if(this->minZ > v.z) {
+            this->minZ = v.z;
+        }
+        if(this->maxZ < v.z) {
+            this->maxZ = v.z;
+        }
+        i++;
     }
-    cogX = (minX + maxX) / 2;
-    cogY = (minY + maxY) / 2;
-    cogZ = (floorf(minZ * 100) / 100 + floorf(maxZ * 100) / 100) / 2;
+
+    this->cogX = (this->minX + this->maxX) / 2;
+    this->cogY = (this->minY + this->maxY) / 2;
+    this->cogZ = (floorf(this->minZ * 100) / 100 + floorf(this->maxZ * 100) / 100) / 2;
 }
 
 void graph_engine::initNoiseGenerator() {
@@ -126,7 +122,7 @@ void graph_engine::drawMesh() {
             MeshVertex v = mesh_object.VerticesArray[vertexIdx];
             //glColor3i(color.r, color.g, color.b);
             glColor3f(1.0, 0.0, 0.0);
-            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+            glVertex3d(v.x- cogX, v.y - cogY, v.z - cogZ);
         }
         glEnd();
     }
@@ -141,11 +137,39 @@ void graph_engine::drawMesh() {
             //glColor3i(color.r, color.g, color.b);
             glLineWidth(15.0);
             glColor3f(0.0, 0.0, 0.0);
-            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+            glVertex3d(v.x - cogX, v.y - cogY, v.z - cogZ);
             //printf("%lf %lf %lf\n", v.x, v.y, v.z);
         }
         glEnd();
     }
+
+    double bMinX = minX - cogX;
+    double bMinY = minY - cogY;
+    double bMinZ = minZ - cogZ;
+
+    double bMaxX = maxX - cogX;
+    double bMaxY = maxY - cogY;
+    double bMaxZ = maxZ - cogZ;
+
+    glBegin(GL_POINTS);
+    glColor4f(0.0f, 0.0f, 1.0f, 0.6f);
+    glVertex3f(bMinX, bMinY, bMinZ);
+    glVertex3f(bMaxX, bMaxY, bMaxZ);
+
+    glVertex3f(-bMinX, bMinY, bMinZ);
+    glVertex3f(bMinX, -bMinY, bMinZ);
+    glVertex3f(bMinX, bMinY, -bMinZ);
+
+    glVertex3f(-bMaxX, bMaxY, bMaxZ);
+    glVertex3f(bMaxX, -bMaxY, bMaxZ);
+    glVertex3f(bMaxX, bMaxY, -bMaxZ);
+    glEnd();
+
+    glBegin(GL_POINTS);
+    glColor3f(1.0f, 0.0f, 1.0f);
+    glVertex3f(0, 0, 0);
+    glEnd();
+
 }
 
 
@@ -161,7 +185,7 @@ void graph_engine::drawNoiseOriginal() {
             int vertexIdx = face.v[i];
             MeshVertex v = noise_original.VerticesArray[vertexIdx];
             glColor3f(1.0, 0.0, 0.0);
-            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+            glVertex3d(v.x, v.y, v.z);
         }
         glEnd();
     }
@@ -175,7 +199,7 @@ void graph_engine::drawNoiseOriginal() {
             MeshVertex v = noise_original.VerticesArray[vertexIdx];
             glLineWidth(15.0);
             glColor3f(0.0, 0.0, 0.0);
-            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+            glVertex3d(v.x, v.y, v.z);
         }
         glEnd();
     }
@@ -193,7 +217,7 @@ void graph_engine::drawNoiseNoisy() {
             int vertexIdx = face.v[i];
             MeshVertex v = noise_noisy.VerticesArray[vertexIdx];
             glColor3f(1.0, 0.0, 0.0);
-            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+            glVertex3d(v.x, v.y, v.z);
         }
         glEnd();
     }
@@ -207,7 +231,7 @@ void graph_engine::drawNoiseNoisy() {
             MeshVertex v = noise_noisy.VerticesArray[vertexIdx];
             glLineWidth(15.0);
             glColor3f(0.0, 0.0, 0.0);
-            glVertex3d(v.x / 2.0, v.y / 2.0, v.z / 2.0);
+            glVertex3d(v.x, v.y, v.z);
         }
         glEnd();
     }
